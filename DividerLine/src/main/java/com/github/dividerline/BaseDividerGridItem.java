@@ -126,16 +126,28 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
 
 
     private void drawGridLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
-        drawHorizontal(c,parent);
-        drawVertical(c,parent);
+        int spanCount = ((GridLayoutManager) parent.getLayoutManager()).getSpanCount();
+        drawHorizontal(c, parent, spanCount);
+        drawVertical(c, parent, spanCount);
     }
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
+
+    public void drawHorizontal(Canvas c, RecyclerView parent, int spanCount) {
         int childCount = parent.getChildCount();
+        int hGap=0;
+        View child;
+        RecyclerView.LayoutParams params;
         for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            child = parent.getChildAt(i);
+            params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            if (isGridLeftItem(i, spanCount)) {
+                hGap = getGridFirstGap(spanCount);
+            } else if (isGridRightItem(i, spanCount)) {
+
+            } else {
+
+            }
             final int left = child.getLeft() - params.leftMargin;
-            final int right = child.getRight() + params.rightMargin+ getHGap();
+            final int right = child.getRight() + params.rightMargin + hGap;
             final int top = child.getBottom() + params.bottomMargin;
             final int bottom = top + getVGap();
             dividerDrawable.setBounds(left, top, right, bottom);
@@ -143,7 +155,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         }
     }
 
-    public void drawVertical(Canvas c, RecyclerView parent) {
+    public void drawVertical(Canvas c, RecyclerView parent, int spanCount) {
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
@@ -158,6 +170,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
             dividerDrawable.draw(c);
         }
     }
+
     private void drawLinearLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
         final int childCount = parent.getChildCount();
 
@@ -186,7 +199,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         final int top;
         final int bottom;
         if (isReverseLayout(parent)) {
-            bottom =child.getTop() - params.topMargin;
+            bottom = child.getTop() - params.topMargin;
             top = bottom - getHGap();
         } else {
             top = child.getBottom() + params.bottomMargin;
@@ -376,11 +389,11 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
     }
 
     private int getGridFirstGap(int spanCount) {
-        return (spanCount - 1) / spanCount;
+        return (spanCount - 1) * getHGap() / spanCount;
     }
 
     private int getGridSecondGap(int spanCount) {
-        return (spanCount - 1) / (2 * spanCount);
+        return (spanCount - 1) * getHGap() / (2 * spanCount);
     }
 
     private void setListReverseOffsets(Rect outRect, View view, RecyclerView parent) {
@@ -432,7 +445,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
     }
 
     private boolean isLinearLayoutManager(RecyclerView parent) {
-        return parent.getLayoutManager() instanceof LinearLayoutManager&&(parent.getLayoutManager() instanceof GridLayoutManager)==false;
+        return parent.getLayoutManager() instanceof LinearLayoutManager && (parent.getLayoutManager() instanceof GridLayoutManager) == false;
     }
 
     private boolean isGridLayoutManager(RecyclerView parent) {
