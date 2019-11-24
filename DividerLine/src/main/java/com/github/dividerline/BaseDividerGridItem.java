@@ -108,21 +108,57 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         if (parent.getLayoutManager() == null) {
             return;
         }
+        //LinearLayoutManager
         if (isLinearLayoutManager(parent)) {
-            drawHorizontalDividerLine(c, parent);
+            drawLinearLayoutHorizontalDividerLine(c, parent);
             return;
         }
-        if (isReverseLayout(parent)) {
-            drawHorizontalForReverse(c, parent);
-            drawVertical(c, parent);
-        } else {
-            drawHorizontal(c, parent);
-            drawVertical(c, parent);
+        //GridLayoutManager
+        if (isGridLayoutManager(parent)) {
+            drawGridLayoutHorizontalDividerLine(c, parent);
+            return;
+        }
+        //StaggeredGridLayoutManager
+        if (isStaggeredGridLayoutManager(parent)) {
+            return;
         }
     }
 
 
-    private void drawHorizontalDividerLine(Canvas c, RecyclerView parent) {
+    private void drawGridLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
+        drawHorizontal(c,parent);
+        drawVertical(c,parent);
+    }
+    public void drawHorizontal(Canvas c, RecyclerView parent) {
+        int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = parent.getChildAt(i);
+            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            final int left = child.getLeft() - params.leftMargin;
+            final int right = child.getRight() + params.rightMargin+ getHGap();
+            final int top = child.getBottom() + params.bottomMargin;
+            final int bottom = top + getVGap();
+            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.draw(c);
+        }
+    }
+
+    public void drawVertical(Canvas c, RecyclerView parent) {
+        final int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = parent.getChildAt(i);
+
+            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+            final int top = child.getTop() - params.topMargin;
+            final int bottom = child.getBottom() + params.bottomMargin;
+            final int left = child.getRight() + params.rightMargin;
+            final int right = left + getHGap();
+
+            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.draw(c);
+        }
+    }
+    private void drawLinearLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
         final int childCount = parent.getChildCount();
 
         for (int i = 0; i < childCount; i++) {
@@ -219,23 +255,8 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         }
     }
 
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
-        int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
-            final int left = child.getLeft() - params.leftMargin;
-            final int right = child.getRight() + params.rightMargin
-                    + getVGap();
-            final int top = child.getBottom() + params.bottomMargin;
-            final int bottom = top + getHGap();
-            dividerDrawable.setBounds(left, top, right, bottom);
-            dividerDrawable.draw(c);
-        }
-    }
 
-    public void drawVertical(Canvas c, RecyclerView parent) {
+    public void drawVertical2(Canvas c, RecyclerView parent) {
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
@@ -411,7 +432,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
     }
 
     private boolean isLinearLayoutManager(RecyclerView parent) {
-        return parent.getLayoutManager() instanceof LinearLayoutManager;
+        return parent.getLayoutManager() instanceof LinearLayoutManager&&(parent.getLayoutManager() instanceof GridLayoutManager)==false;
     }
 
     private boolean isGridLayoutManager(RecyclerView parent) {

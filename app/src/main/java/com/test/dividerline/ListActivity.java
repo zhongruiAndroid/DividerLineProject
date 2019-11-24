@@ -38,24 +38,25 @@ public class ListActivity extends AppCompatActivity {
         boolean reverse = getIntent().getBooleanExtra("reverse", false);
         boolean showTop = getIntent().getBooleanExtra("showTop", false);
         boolean showBottom = getIntent().getBooleanExtra("showBottom", false);
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
         switch (type){
             case 1:
-                linearLayoutManager = new LinearLayoutManager(this,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL,reverse);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL,reverse);
+                recyclerView.setLayoutManager(linearLayoutManager);
             break;
             case 2:
-                linearLayoutManager = new GridLayoutManager(this,num,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL,reverse);
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(this,num,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL,reverse);
+                recyclerView.setLayoutManager(gridLayoutManager);
             break;
             case 3:
-                linearLayoutManager = new StaggeredGridLayoutManager(num,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL);
-            break;
+                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(num,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL);
+                recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                break;
         }
 
         BaseDividerGridItem baseDividerGridItem = new BaseDividerGridItem(this, 30,R.color.colorAccent3);
         baseDividerGridItem.setShowFristLine(showTop);
         baseDividerGridItem.setShowLastLine(showBottom);
 
-        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(baseDividerGridItem);
         recyclerView.setAdapter(adapter);
 
