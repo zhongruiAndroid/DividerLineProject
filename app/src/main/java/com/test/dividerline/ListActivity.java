@@ -26,7 +26,7 @@ public class ListActivity extends AppCompatActivity {
 
         List<String> list=new ArrayList<>();
         adapter=new MyAdapter();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 500; i++) {
             list.add("第"+i+"个item");
         }
         adapter.setList(list);

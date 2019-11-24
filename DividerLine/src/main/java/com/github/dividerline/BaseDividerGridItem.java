@@ -115,7 +115,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         }
         //GridLayoutManager
         if (isGridLayoutManager(parent)) {
-            drawGridLayoutHorizontalDividerLine(c, parent);
+//            drawGridLayoutHorizontalDividerLine(c, parent);
             return;
         }
         //StaggeredGridLayoutManager
@@ -139,17 +139,23 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             child = parent.getChildAt(i);
             params = (RecyclerView.LayoutParams) child.getLayoutParams();
-            if (isGridLeftItem(i, spanCount)) {
+            int tempLeftGap=0;
+            if (isGridLeftItem(i,spanCount)) {
+                //顺向列表左边部分的item
                 hGap = getGridFirstGap(spanCount);
-            } else if (isGridRightItem(i, spanCount)) {
-
+            }else if(isGridRightItem(i, spanCount)){
+                //顺向列表右边部分的item
+                hGap = getGridFirstGap(spanCount);
+                tempLeftGap=hGap;
             } else {
-
+                //顺向列表中间部分的item
+                hGap = getGridSecondRightGap(spanCount);
+                tempLeftGap=getGridSecondLeftGap(spanCount);
             }
-            final int left = child.getLeft() - params.leftMargin;
-            final int right = child.getRight() + params.rightMargin + hGap;
-            final int top = child.getBottom() + params.bottomMargin;
-            final int bottom = top + getVGap();
+            final int left   = child.getLeft() - params.leftMargin-tempLeftGap;
+            final int right  = child.getRight() + params.rightMargin + hGap;
+            final int top    = child.getBottom() + params.bottomMargin;
+            final int bottom = top + getHGap();
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(c);
         }
@@ -260,7 +266,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
                     .getLayoutParams();
             final int left = child.getLeft() - params.leftMargin;
             final int right = child.getRight() + params.rightMargin
-                    + getVGap();
+                    + getHGap();
             final int top = child.getTop() - params.topMargin - getHGap();
             final int bottom = child.getTop() - params.topMargin;
             dividerDrawable.setBounds(left, top, right, bottom);
@@ -352,7 +358,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
                 outRect.set(getGridFirstGap(spanCount), 0, 0, 0);
             } else {
                 //中间item
-                outRect.set(getGridSecondGap(spanCount), 0, getGridSecondGap(spanCount), 0);
+                outRect.set(getGridSecondLeftGap(spanCount), 0, getGridSecondRightGap(spanCount), 0);
             }
         } else {
             if (isGridLeftItem(itemPosition, spanCount)) {
@@ -363,7 +369,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
                 outRect.set(getGridFirstGap(spanCount), 0, 0, getVGap());
             } else {
                 //中间item
-                outRect.set(getGridSecondGap(spanCount), 0, getGridSecondGap(spanCount), getVGap());
+                outRect.set(getGridSecondLeftGap(spanCount), 0, getGridSecondRightGap(spanCount), getVGap());
             }
         }
     }
@@ -388,12 +394,29 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         return position >= childCount - ranger;
     }
 
+    /**
+     * 列表两边的item所拥有的间隔
+     * @param spanCount
+     * @return
+     */
     private int getGridFirstGap(int spanCount) {
-        return (spanCount - 1) * getHGap() / spanCount;
+        return   getVGap()*(spanCount-1)/ spanCount;
     }
-
-    private int getGridSecondGap(int spanCount) {
-        return (spanCount - 1) * getHGap() / (2 * spanCount);
+    /**
+     * 列表中间部分item左边所拥有的间隔
+     * @param spanCount
+     * @return
+     */
+    private int getGridSecondLeftGap(int spanCount) {
+        return   getVGap()/ spanCount;
+    }
+    /**
+     * 列表中间部分item右边所拥有的间隔
+     * @param spanCount
+     * @return
+     */
+    private int getGridSecondRightGap(int spanCount) {
+        return   getVGap()*(spanCount-2)/ spanCount;
     }
 
     private void setListReverseOffsets(Rect outRect, View view, RecyclerView parent) {

@@ -7,8 +7,6 @@
     android:layout_height="50dp"
     tools:context=".ListActivity"
     android:gravity="center"
-    android:layout_margin="20dp"
-    android:padding="10dp"
     android:background="@color/colorAccent4"
     >
     <TextView
