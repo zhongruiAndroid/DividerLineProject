@@ -38,7 +38,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
     }
 
     public BaseDividerGridItem(Context context, int hGap, @ColorRes int colorId) {
-        this(context, hGap, new ColorDrawable(ContextCompat.getColor(context,colorId)));
+        this(context, hGap, new ColorDrawable(ContextCompat.getColor(context, colorId)));
     }
 
     public BaseDividerGridItem(Context context, int hGap, Drawable drawable) {
@@ -108,12 +108,8 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         if (parent.getLayoutManager() == null) {
             return;
         }
-        if(isLinearLayoutManager(parent)){
-            if(isReverseLayout(parent)){
-                drawHorizontalDividerLineForReverse(c, parent);
-            }else{
-                drawHorizontalDividerLine(c, parent);
-            }
+        if (isLinearLayoutManager(parent)) {
+            drawHorizontalDividerLine(c, parent);
             return;
         }
         if (isReverseLayout(parent)) {
@@ -125,32 +121,8 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         }
     }
 
-    private void drawHorizontalDividerLineForReverse(Canvas c, RecyclerView parent) {
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
-        final int childCount = parent.getChildCount();
 
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
-            //是否绘制第一个item底部(反向的原因)
-            if(i == 0&& isShowFristLine()){
-                drawHorizontalFirstLine(c, parent,params);
-            }
-            if(i<childCount-1){
-                drawHorizontalBottomLine(c, left, right, child, params);
-            }else{
-                if(isShowLastLine()){
-                    //是否绘制最后一个item的底部
-                    drawHorizontalBottomLine(c, left, right, child, params);
-                }
-            }
-        }
-    }
     private void drawHorizontalDividerLine(Canvas c, RecyclerView parent) {
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
         final int childCount = parent.getChildCount();
 
         for (int i = 0; i < childCount; i++) {
@@ -158,44 +130,67 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
             //是否绘制第一个item顶部
-            if(i == 0&& isShowFristLine()){
-                drawHorizontalFirstLine(c, parent,params);
+            if (i == 0 && isShowFristLine()) {
+                drawHorizontalFirstLine(c, parent, params);
             }
-            if(i<childCount-1){
-                drawHorizontalBottomLine(c, left, right, child, params);
-            }else{
-                if(isShowLastLine()){
+            if (i < childCount - 1) {
+                drawHorizontalBottomLine(c, parent, child, params);
+            } else {
+                if (isShowLastLine()) {
                     //是否绘制最后一个item的底部
-                    drawHorizontalBottomLine(c, left, right, child, params);
+                    drawHorizontalBottomLine(c, parent, child, params);
                 }
             }
         }
     }
 
-    private void drawHorizontalBottomLine(Canvas c, int left, int right, View child, RecyclerView.LayoutParams params) {
-        final int top = child.getBottom() + params.bottomMargin;
-        final int bottom = top + getHGap();
+    private void drawHorizontalBottomLine(Canvas c, RecyclerView parent, View child, RecyclerView.LayoutParams params) {
+        final int left = parent.getPaddingLeft();
+        final int right = parent.getWidth() - parent.getPaddingRight();
+        final int top;
+        final int bottom;
+        if (isReverseLayout(parent)) {
+            bottom =child.getTop() - params.topMargin;
+            top = bottom - getHGap();
+        } else {
+            top = child.getBottom() + params.bottomMargin;
+            bottom = top + getHGap();
+        }
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
     }
 
     public void drawHorizontalFirstLine(Canvas c, RecyclerView parent, RecyclerView.LayoutParams params) {
-        final View child = parent.getChildAt(0);
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
-        final int bottom = child.getTop()-params.topMargin;
-        final int top =bottom- getHGap();
+        final View child;
+        final int left;
+        final int right;
+        final int bottom;
+        final int top;
+        if (isReverseLayout(parent)) {
+            child = parent.getChildAt(0);
+            left = parent.getPaddingLeft();
+            right = parent.getWidth() - parent.getPaddingRight();
+            top = child.getBottom() + params.bottomMargin;
+            bottom = top + getHGap();
+        } else {
+            child = parent.getChildAt(0);
+            left = parent.getPaddingLeft();
+            right = parent.getWidth() - parent.getPaddingRight();
+            bottom = child.getTop() - params.topMargin;
+            top = bottom - getHGap();
+        }
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
     }
 
-    private boolean isReverseLayout(RecyclerView parent){
-        if(parent.getLayoutManager() instanceof StaggeredGridLayoutManager){
-            return ((StaggeredGridLayoutManager)(parent.getLayoutManager())).getReverseLayout();
-        }else{
-            return ((LinearLayoutManager)(parent.getLayoutManager())).getReverseLayout();
+    private boolean isReverseLayout(RecyclerView parent) {
+        if (parent.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+            return ((StaggeredGridLayoutManager) (parent.getLayoutManager())).getReverseLayout();
+        } else {
+            return ((LinearLayoutManager) (parent.getLayoutManager())).getReverseLayout();
         }
     }
+
     private int getSpanCount(RecyclerView parent) {
         // 列数
         int spanCount = 1;
@@ -290,9 +285,9 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         boolean reverseLayout = isReverseLayout(parent);
         if (isLinearLayoutManager(parent)) {
             //list
-            if(reverseLayout){
+            if (reverseLayout) {
                 setListReverseOffsets(outRect, view, parent);
-            }else{
+            } else {
                 setListOffsets(outRect, view, parent);
             }
             return;
@@ -377,7 +372,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
                 //是否显示第一个item的底部分割线(反向的原因)
                 outRect.set(0, getHGap(), 0, getHGap());
             } else {
-                outRect.set(0, getHGap(),0, 0);
+                outRect.set(0, getHGap(), 0, 0);
             }
         } else if (itemPosition == childCount - 1) {
             //最后一个item
@@ -390,6 +385,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
             outRect.set(0, getHGap(), 0, 0);
         }
     }
+
     private void setListOffsets(Rect outRect, View view, RecyclerView parent) {
         //顺向以绘制item的bottom部位
         int itemPosition = parent.getChildAdapterPosition(view);
