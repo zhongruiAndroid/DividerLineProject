@@ -1,19 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
+    <EditText
+        android:id="@+id/etNum"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:imeOptions="actionNext"
+        android:inputType="number"
+        android:text="1"
+        android:textSize="13sp"
+        />
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <RadioButton
+            android:id="@+id/rb1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="vertical"
+            android:checked="true"
+            />
+        <RadioButton
+            android:id="@+id/rb2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="horizontal"
+            />
+    </RadioGroup>
+    <CheckBox
+        android:id="@+id/cbReverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="是否反向"
+        />
+    <CheckBox
+        android:id="@+id/cbShowTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="显示LinearLayoutManager TopLine"
+        />
+    <CheckBox
+        android:id="@+id/cbShowBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="显示LinearLayoutManager BottomLine"
+        />
+    <Button
+        android:id="@+id/btType1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LinearLayoutManager"
+        android:textAllCaps="false"
+        />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/btType2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GridLayoutManager"
+        android:textAllCaps="false"
+        />
+
+    <Button
+        android:id="@+id/btType3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="StaggeredGridLayoutManager"
+        android:textAllCaps="false"
+        />
+</LinearLayout>
