@@ -54,7 +54,7 @@ public class ListActivity extends AppCompatActivity {
         }
 
         BaseDividerGridItem baseDividerGridItem = new BaseDividerGridItem(this, 30,R.color.colorAccent3);
-        baseDividerGridItem.setShowFristLine(showTop);
+        baseDividerGridItem.setShowFirstLine(showTop);
         baseDividerGridItem.setShowLastLine(showBottom);
 
         recyclerView.addItemDecoration(baseDividerGridItem);
