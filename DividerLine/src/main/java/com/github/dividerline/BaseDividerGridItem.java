@@ -55,7 +55,7 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
             this.hGap = dividerDrawable.getIntrinsicWidth();
         } else {
             this.hGap = hGap;
-            vGap = hGap;
+            this.vGap = hGap;
         }
         a.recycle();
     }
