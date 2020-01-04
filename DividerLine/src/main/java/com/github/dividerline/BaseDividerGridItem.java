@@ -390,6 +390,16 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
         return (isGridLeftItem(position, spanCount) == false) && (isGridRightItem(position, spanCount) == false);
     }
 
+
+    /*表格item左边间距*/
+    private int getGridLeftGap(){
+        return 0;
+    }
+    /*表格item右边间距*/
+    private int getGridRightGap(){
+        return 0;
+    }
+
     private boolean isGridLastRaw(int position, int spanCount, int childCount) {
         int ranger = childCount % spanCount;
         if (ranger == 0) {
