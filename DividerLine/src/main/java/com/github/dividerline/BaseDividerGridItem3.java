@@ -152,7 +152,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             child = parent.getChildAt(i);
 
             //画竖线用水平间距hGap
-            drawVerticalLine(i, c, child, childCount);
+            drawVerticalLine(i, c, child, spanCount,childCount);
 
             //最后一行不画横线
             if (isGridLastRaw(i, spanCount, childCount)) {
@@ -187,7 +187,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         dividerDrawable.draw(c);
     }
 
-    public void drawVerticalLine(int position, Canvas c, View child, int spanCount) {
+    public void drawVerticalLine(int position, Canvas c, View child, int spanCount,int childCount) {
         int vGap = getHGapHalf();
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
@@ -203,7 +203,18 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             //顺向列表右边部分的item
             right = child.getLeft() - params.leftMargin;
             left = right - vGap;
-        } else {
+        } else if(isGridLastRaw(position,spanCount,childCount)){
+            //顺向列表最后一行，但不是最右边的item
+            //左边部分
+            right = child.getLeft() - params.leftMargin;
+            left = right - vGap;
+            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.draw(c);
+
+            //右边部分
+            left = child.getRight() + params.rightMargin;
+            right = left + getHGap();
+        }else{
             //顺向列表中间部分的item
             //左边部分
             right = child.getLeft() - params.leftMargin;
@@ -214,7 +225,6 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             //右边部分
             left = child.getRight() + params.rightMargin;
             right = left + vGap;
-
         }
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
@@ -396,10 +406,10 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         if (isGridLastRaw(itemPosition, spanCount, childCount)) {
             if (isGridLeftItem(itemPosition, spanCount)) {
                 //最左边item
-                outRect.set(0, 0, getHGapHalf(), 0);
+                outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
             } else if (isGridRightItem(itemPosition, spanCount)) {
                 //最右边item
-                outRect.set(getHGapHalf(), 0, 0, 0);
+                outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
             } else {
                 //中间item
                 outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
@@ -407,10 +417,10 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         } else {
             if (isGridLeftItem(itemPosition, spanCount)) {
                 //最左边item
-                outRect.set(0, 0, getHGapHalf(), getVGap());
+                outRect.set(getHGapHalf(), 0, getHGapHalf(), getVGap());
             } else if (isGridRightItem(itemPosition, spanCount)) {
                 //最右边item
-                outRect.set(getHGapHalf(), 0, 0, getVGap());
+                outRect.set(getHGapHalf(), 0, getHGapHalf(), getVGap());
             } else {
                 //中间item
                 outRect.set(getHGapHalf(), 0, getHGapHalf(), getVGap());
