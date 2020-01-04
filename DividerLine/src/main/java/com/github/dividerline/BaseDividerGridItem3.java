@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.RecyclerView.State;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 
@@ -60,8 +61,8 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             this.hGap = hGap;
             this.vGap = hGap;
         }
-        if(this.hGap>0){
-            this.hGapHalf=Math.max(1,this.hGap/2);
+        if (this.hGap > 0) {
+            this.hGapHalf = Math.max(1, this.hGap / 2);
         }
         a.recycle();
     }
@@ -94,6 +95,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
 
     public void setHGap(int hGap) {
         this.hGap = hGap;
+        if (this.hGap > 0) {
+            this.hGapHalf = Math.max(1, this.hGap / 2);
+        }
     }
 
     public int getVGap() {
@@ -103,6 +107,10 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
 
     public void setVGap(int vGap) {
         this.vGap = vGap;
+    }
+
+    public int getHGapHalf() {
+        return hGapHalf;
     }
 
     private int getAdapterBottomViewCount(RecyclerView parent) {
@@ -125,7 +133,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
         //GridLayoutManager
         if (isGridLayoutManager(parent)) {
-//            drawGridLayoutHorizontalDividerLine(c, parent);
+            drawGridLayoutHorizontalDividerLine(c, parent);
             return;
         }
         //StaggeredGridLayoutManager
@@ -137,54 +145,80 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
 
     private void drawGridLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
         int spanCount = ((GridLayoutManager) parent.getLayoutManager()).getSpanCount();
-        drawHorizontal(c, parent, spanCount);
-        drawVertical(c, parent, spanCount);
-    }
-
-    public void drawHorizontal(Canvas c, RecyclerView parent, int spanCount) {
         int childCount = parent.getChildCount();
-        int hGap = 0;
+        Log.i("=====", "====childCount=" + childCount);
         View child;
-        RecyclerView.LayoutParams params;
         for (int i = 0; i < childCount; i++) {
             child = parent.getChildAt(i);
-            params = (RecyclerView.LayoutParams) child.getLayoutParams();
-            int tempLeftGap = 0;
-            if (isGridLeftItem(i, spanCount)) {
-                //顺向列表左边部分的item
-                hGap = getGridFirstGap(spanCount);
-            } else if (isGridRightItem(i, spanCount)) {
-                //顺向列表右边部分的item
-                hGap = getGridFirstGap(spanCount);
-                tempLeftGap = hGap;
-            } else {
-                //顺向列表中间部分的item
-                hGap = getGridSecondRightGap(spanCount);
-                tempLeftGap = getGridSecondLeftGap(spanCount);
+
+            //画竖线用水平间距hGap
+            drawVerticalLine(i, c, child, childCount);
+
+            //最后一行不画横线
+            if (isGridLastRaw(i, spanCount, childCount)) {
+                continue;
             }
-            final int left = child.getLeft() - params.leftMargin - tempLeftGap;
-            final int right = child.getRight() + params.rightMargin + hGap;
-            final int top = child.getBottom() + params.bottomMargin;
-            final int bottom = top + getVGap();
-            dividerDrawable.setBounds(left, top, right, bottom);
-            dividerDrawable.draw(c);
+            //画横线用垂直间距vGap
+            drawHorizontalLine(i, c, child, spanCount);
         }
     }
 
-    public void drawVertical(Canvas c, RecyclerView parent, int spanCount) {
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
+    public void drawHorizontalLine(int position, Canvas c, View child, int spanCount) {
+        RecyclerView.LayoutParams params;
+        params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-            final int top = child.getTop() - params.topMargin;
-            final int bottom = child.getBottom() + params.bottomMargin;
-            final int left = child.getRight() + params.rightMargin;
-            final int right = left + getHGap();
+        int top = child.getBottom() + params.bottomMargin;
+        int bottom = top + getVGap();
+        int left = child.getLeft() - params.leftMargin;
+        int right = child.getRight() + params.rightMargin;
 
+        if (isGridLeftItem(position, spanCount)) {
+            //顺向列表左边部分的item
+            right = right + getHGapHalf();
+        } else if (isGridRightItem(position, spanCount)) {
+            //顺向列表右边部分的item
+            left = left - getHGapHalf();
+        } else {
+            //顺向列表中间部分的item
+            left = left - getHGapHalf();
+            right = right + getHGapHalf();
+        }
+        dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.draw(c);
+    }
+
+    public void drawVerticalLine(int position, Canvas c, View child, int spanCount) {
+        int vGap = getHGapHalf();
+
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        int top = child.getTop() - params.topMargin;
+        int bottom = child.getBottom() + params.bottomMargin;
+        int left = 0;
+        int right = 0;
+        if (isGridLeftItem(position, spanCount)) {
+            //顺向列表左边部分的item
+            left = child.getRight() + params.rightMargin;
+            right = left + vGap;
+        } else if (isGridRightItem(position, spanCount)) {
+            //顺向列表右边部分的item
+            right = child.getLeft() - params.leftMargin;
+            left = right - vGap;
+        } else {
+            //顺向列表中间部分的item
+            //左边部分
+            right = child.getLeft() - params.leftMargin;
+            left = right - vGap;
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(c);
+
+            //右边部分
+            left = child.getRight() + params.rightMargin;
+            right = left + vGap;
+
         }
+        dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.draw(c);
+
     }
 
     private void drawLinearLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
@@ -302,8 +336,8 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
     }
 
-    private boolean isLastColum(RecyclerView parent, int pos, int spanCount,
-                                int childCount) {
+    private boolean isLastColumn(RecyclerView parent, int pos, int spanCount,
+                                 int childCount) {
         LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager) {
             if ((pos + 1) % spanCount == 0)// 如果是最后一列，则不需要绘制右边
@@ -362,24 +396,24 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         if (isGridLastRaw(itemPosition, spanCount, childCount)) {
             if (isGridLeftItem(itemPosition, spanCount)) {
                 //最左边item
-                outRect.set(0, 0, getGridFirstGap(spanCount), 0);
+                outRect.set(0, 0, getHGapHalf(), 0);
             } else if (isGridRightItem(itemPosition, spanCount)) {
                 //最右边item
-                outRect.set(getGridFirstGap(spanCount), 0, 0, 0);
+                outRect.set(getHGapHalf(), 0, 0, 0);
             } else {
                 //中间item
-                outRect.set(getGridSecondLeftGap(spanCount), 0, getGridSecondRightGap(spanCount), 0);
+                outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
             }
         } else {
             if (isGridLeftItem(itemPosition, spanCount)) {
                 //最左边item
-                outRect.set(0, 0, getGridFirstGap(spanCount), getVGap());
+                outRect.set(0, 0, getHGapHalf(), getVGap());
             } else if (isGridRightItem(itemPosition, spanCount)) {
                 //最右边item
-                outRect.set(getGridFirstGap(spanCount), 0, 0, getVGap());
+                outRect.set(getHGapHalf(), 0, 0, getVGap());
             } else {
                 //中间item
-                outRect.set(getGridSecondLeftGap(spanCount), 0, getGridSecondRightGap(spanCount), getVGap());
+                outRect.set(getHGapHalf(), 0, getHGapHalf(), getVGap());
             }
         }
     }

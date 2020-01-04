@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.github.dividerline.BaseDividerGridItem;
+import com.github.dividerline.BaseDividerGridItem3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class ListActivity extends AppCompatActivity {
 
         List<String> list=new ArrayList<>();
         adapter=new MyAdapter();
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 50; i++) {
             list.add("第"+i+"个item");
         }
         adapter.setList(list);
@@ -53,7 +54,7 @@ public class ListActivity extends AppCompatActivity {
                 break;
         }
 
-        BaseDividerGridItem baseDividerGridItem = new BaseDividerGridItem(this, 30,R.color.colorAccent3);
+        BaseDividerGridItem3 baseDividerGridItem = new BaseDividerGridItem3(this, 30,R.color.colorAccent3);
         baseDividerGridItem.setShowFirstLine(showTop);
         baseDividerGridItem.setShowLastLine(showBottom);
 
