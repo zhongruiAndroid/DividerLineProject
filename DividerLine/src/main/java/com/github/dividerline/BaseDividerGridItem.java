@@ -392,11 +392,16 @@ public class BaseDividerGridItem extends RecyclerView.ItemDecoration {
 
 
     /*表格item左边间距*/
-    private int getGridLeftGap(){
-        return 0;
+    private int getGridLeftGap(int position,int spanCount){
+        int gap=getHGap();
+        if(getHGap()>0){
+            gap=Math.max(gap,spanCount);
+        }
+        int leftGap = (position % spanCount) * gap / spanCount;
+        return leftGap;
     }
     /*表格item右边间距*/
-    private int getGridRightGap(){
+    private int getGridRightGap(int position,int spanCount){
         return 0;
     }
 
