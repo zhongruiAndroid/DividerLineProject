@@ -195,15 +195,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         int bottom = child.getBottom() + params.bottomMargin;
         int left = 0;
         int right = 0;
-        if (isGridLeftItem(position, spanCount)) {
-            //顺向列表左边部分的item
-            left = child.getRight() + params.rightMargin;
-            right = left + vGap;
-        } else if (isGridRightItem(position, spanCount)) {
-            //顺向列表右边部分的item
-            right = child.getLeft() - params.leftMargin;
-            left = right - vGap;
-        } else if(position==childCount-1){
+          if(position==childCount-1&&!isGridRightItem(position, spanCount)){
             //最后一个但又不是最右边的一个item
             //顺向列表最后一行，但不是最右边的item
             //左边部分
@@ -215,6 +207,14 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             //右边部分
             left = child.getRight() + params.rightMargin;
             right = left + getHGap();
+        }else if (isGridLeftItem(position, spanCount)) {
+            //顺向列表左边部分的item
+            left = child.getRight() + params.rightMargin;
+            right = left + vGap;
+        } else if (isGridRightItem(position, spanCount)) {
+            //顺向列表右边部分的item
+            right = child.getLeft() - params.leftMargin;
+            left = right - vGap;
         }else{
             //顺向列表中间部分的item
             //左边部分
