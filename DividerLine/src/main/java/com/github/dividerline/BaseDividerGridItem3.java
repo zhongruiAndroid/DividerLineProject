@@ -138,13 +138,22 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
         //StaggeredGridLayoutManager
         if (isStaggeredGridLayoutManager(parent)) {
+            drawGridLayoutHorizontalDividerLine(c, parent);
             return;
         }
     }
 
 
     private void drawGridLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
-        int spanCount = ((GridLayoutManager) parent.getLayoutManager()).getSpanCount();
+        int spanCount = 0;
+        if (parent.getLayoutManager() instanceof GridLayoutManager) {
+            spanCount = ((GridLayoutManager) parent.getLayoutManager()).getSpanCount();
+        } else if (parent.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+            spanCount = ((StaggeredGridLayoutManager) parent.getLayoutManager()).getSpanCount();
+        }
+        if (spanCount == 0) {
+            return;
+        }
         int childCount = parent.getChildCount();
         boolean isReverseLayout = isReverseLayout(parent);
         View child;
@@ -173,8 +182,8 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         int right = child.getRight() + params.rightMargin;
 
         if (isReverseLayout) {
-            bottom = child.getTop()-params.topMargin;
-            top =bottom- getVGap();
+            bottom = child.getTop() - params.topMargin;
+            top = bottom - getVGap();
         }
 
         if (isGridLeftItem(position, spanCount)) {
@@ -209,7 +218,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
         if (position == childCount - 1 && !isGridRightItem(position, spanCount)) {
             //最后一个但又不是最右边的一个item
-            if(!isGridLeftItem(position, spanCount)){
+            if (!isGridLeftItem(position, spanCount)) {
                 //如果不是最左边的一个item
                 //左边部分
                 right = child.getLeft() - params.leftMargin;
@@ -421,7 +430,11 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
         if (isStaggeredGridLayoutManager(parent)) {
             //grid
-            setGridOffsets(outRect, view, parent);
+            if (reverseLayout) {
+                setGridReverseOffsets(outRect, view, parent);
+            } else {
+                setGridOffsets(outRect, view, parent);
+            }
             return;
         }
     }

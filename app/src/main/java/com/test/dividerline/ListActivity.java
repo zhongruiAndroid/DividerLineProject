@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
 import com.github.dividerline.BaseDividerGridItem;
 import com.github.dividerline.BaseDividerGridItem3;
@@ -52,6 +53,7 @@ public class ListActivity extends AppCompatActivity {
             break;
             case 3:
                 StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(num,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL);
+                staggeredGridLayoutManager.setReverseLayout(reverse);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                 break;
         }
