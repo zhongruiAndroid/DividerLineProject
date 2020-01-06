@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     EditText etNum;
+    EditText etCount;
     Button btType1;
     Button btType2;
     Button btType3;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         etNum = findViewById(R.id.etNum);
+        etCount = findViewById(R.id.etCount);
         btType1 = findViewById(R.id.btType1);
         btType2 = findViewById(R.id.btType2);
         btType3 = findViewById(R.id.btType3);
@@ -63,10 +65,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (TextUtils.isEmpty(etNum.getText()) == false) {
             num = Integer.valueOf(etNum.getText().toString());
         }
+        int count = 1;
+        if (TextUtils.isEmpty(etCount.getText()) == false) {
+            count = Integer.valueOf(etCount.getText().toString());
+        }
         intent.putExtra("num", num);
         intent.putExtra("type", type);
         intent.putExtra("orientation", rb1.isChecked());
         intent.putExtra("reverse", cbReverse.isChecked());
+        intent.putExtra("count",count);
         intent.putExtra("showTop", cbShowTop.isChecked());
         intent.putExtra("showBottom", cbShowBottom.isChecked());
         startActivity(intent);

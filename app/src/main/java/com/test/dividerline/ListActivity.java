@@ -23,11 +23,13 @@ public class ListActivity extends AppCompatActivity {
 
         recyclerView=findViewById(R.id.rv);
 
+        int count = getIntent().getIntExtra("count", 1);
+
 
 
         List<String> list=new ArrayList<>();
         adapter=new MyAdapter();
-        for (int i = 0; i < 149; i++) {
+        for (int i = 0; i < count; i++) {
             list.add("第"+i+"个item");
         }
         adapter.setList(list);

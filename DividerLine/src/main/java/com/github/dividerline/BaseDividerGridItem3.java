@@ -203,7 +203,8 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             //顺向列表右边部分的item
             right = child.getLeft() - params.leftMargin;
             left = right - vGap;
-        } else if(isGridLastRaw(position,spanCount,childCount)){
+        } else if(position==childCount-1){
+            //最后一个但又不是最右边的一个item
             //顺向列表最后一行，但不是最右边的item
             //左边部分
             right = child.getLeft() - params.leftMargin;
