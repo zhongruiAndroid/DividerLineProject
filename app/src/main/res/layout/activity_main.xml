@@ -120,7 +120,9 @@
             android:id="@+id/sbHGap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:progress="100" />
+            android:progress="20"
+            android:max="100"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -138,6 +140,7 @@
             android:id="@+id/sbVGap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:progress="100" />
+            android:progress="20"
+            android:max="100"/>
     </LinearLayout>
 </LinearLayout>

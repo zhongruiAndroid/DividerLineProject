@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +20,9 @@ import android.widget.RadioButton;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     EditText etNum;
     EditText etCount;
+    AppCompatSeekBar sbHGap;
+
+    AppCompatSeekBar sbVGap;
     //    EditText etCrossPosition;
 //    EditText etCrossNum;
     Button btType1;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 //        etCrossPosition = findViewById(R.id.etCrossPosition);
 //        etCrossNum = findViewById(R.id.etCrossNum);
+        sbHGap = findViewById(R.id.sbHGap);
+        sbVGap = findViewById(R.id.sbVGap);
         etNum = findViewById(R.id.etNum);
         etCount = findViewById(R.id.etCount);
         btType1 = findViewById(R.id.btType1);
@@ -80,21 +86,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (TextUtils.isEmpty(etCount.getText()) == false) {
             count = Integer.valueOf(etCount.getText().toString());
         }
-//        int crossPosition = 1;
-//        if (TextUtils.isEmpty(etCrossPosition.getText()) == false) {
-//            crossPosition = Integer.valueOf(etCrossPosition.getText().toString());
-//        }
-//        int crossNum = 1;
-//        if (TextUtils.isEmpty(etCrossNum.getText()) == false) {
-//            crossNum = Integer.valueOf(etCrossNum.getText().toString());
-//        }
+        int hGap = sbHGap.getProgress();
+
+        int vGap = sbVGap.getProgress();
+
         intent.putExtra("num", num);
         intent.putExtra("type", type);
         intent.putExtra("orientation", rb1.isChecked());
         intent.putExtra("reverse", cbReverse.isChecked());
         intent.putExtra("count", count);
-//        intent.putExtra("crossPosition",crossPosition);
-//        intent.putExtra("crossNum",crossNum);
+        intent.putExtra("hGap",hGap);
+        intent.putExtra("vGap",vGap);
         intent.putExtra("showTop", cbShowTop.isChecked());
         intent.putExtra("showBottom", cbShowBottom.isChecked());
         startActivity(intent);

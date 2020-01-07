@@ -27,8 +27,8 @@ public class ListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
 
         int count = getIntent().getIntExtra("count", 1);
-        int crossPosition = getIntent().getIntExtra("crossPosition", 1);
-        final int crossNum = getIntent().getIntExtra("crossNum", 1);
+        int hGap = getIntent().getIntExtra("hGap", 0);
+        int vGap = getIntent().getIntExtra("vGap", 0);
 
 
         List<String> list = new ArrayList<>();
@@ -62,7 +62,9 @@ public class ListActivity extends AppCompatActivity {
                 break;
         }
 
-        BaseDividerGridItem3 baseDividerGridItem = new BaseDividerGridItem3(this, 30, ContextCompat.getColor(this,R.color.colorAccent3));
+        BaseDividerGridItem3 baseDividerGridItem = new BaseDividerGridItem3(this, 30, ContextCompat.getColor(this, R.color.colorAccent3));
+        baseDividerGridItem.setHGap(hGap);
+        baseDividerGridItem.setVGap(vGap);
         baseDividerGridItem.setShowFirstLine(showTop);
         baseDividerGridItem.setShowLastLine(showBottom);
 

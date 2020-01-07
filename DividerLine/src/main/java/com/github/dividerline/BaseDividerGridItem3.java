@@ -64,6 +64,8 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
         if (this.hGap > 0) {
             this.hGapHalf = Math.max(1, this.hGap / 2);
+        }else{
+            this.hGapHalf=0;
         }
         a.recycle();
     }
@@ -98,6 +100,8 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         this.hGap = hGap;
         if (this.hGap > 0) {
             this.hGapHalf = Math.max(1, this.hGap / 2);
+        }else{
+            this.hGapHalf=0;
         }
     }
 
