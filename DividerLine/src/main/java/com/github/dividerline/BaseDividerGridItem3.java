@@ -3,6 +3,7 @@ package com.github.dividerline;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -36,16 +37,19 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
     private boolean showFirstLine;
     private boolean showLastLine;
 
+    private boolean isTransparentDrawable;
+
     public BaseDividerGridItem3(Context context) {
         this(context, -1);
     }
 
     public BaseDividerGridItem3(Context context, int hGap) {
-        this(context, hGap, null);
+        this(context, hGap, Color.TRANSPARENT);
     }
 
     public BaseDividerGridItem3(Context context, int hGap, @ColorInt int colorId) {
         this(context, hGap, new ColorDrawable(colorId));
+        isTransparentDrawable=(colorId==Color.TRANSPARENT);
     }
 
     public BaseDividerGridItem3(Context context, int hGap, Drawable drawable) {
@@ -58,6 +62,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         if (hGap < 0) {
             this.vGap = dividerDrawable.getIntrinsicHeight();
             this.hGap = dividerDrawable.getIntrinsicWidth();
+            //可能等于-1
+            this.vGap=Math.max(this.vGap,0);
+            this.hGap=Math.max(this.hGap,0);
         } else {
             this.hGap = hGap;
             this.vGap = hGap;
@@ -128,6 +135,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, State state) {
+        if(isTransparentDrawable){
+            return;
+        }
         if (parent.getLayoutManager() == null) {
             return;
         }

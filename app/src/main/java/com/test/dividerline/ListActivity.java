@@ -62,7 +62,7 @@ public class ListActivity extends AppCompatActivity {
                 break;
         }
 
-        BaseDividerGridItem3 baseDividerGridItem = new BaseDividerGridItem3(this, 30, ContextCompat.getColor(this, R.color.colorAccent3));
+        BaseDividerGridItem3 baseDividerGridItem = new BaseDividerGridItem3(this, 30);
         baseDividerGridItem.setHGap(hGap);
         baseDividerGridItem.setVGap(vGap);
         baseDividerGridItem.setShowFirstLine(showTop);
