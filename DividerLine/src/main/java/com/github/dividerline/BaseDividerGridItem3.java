@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -43,8 +44,8 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         this(context, hGap, null);
     }
 
-    public BaseDividerGridItem3(Context context, int hGap, @ColorRes int colorId) {
-        this(context, hGap, new ColorDrawable(ContextCompat.getColor(context, colorId)));
+    public BaseDividerGridItem3(Context context, int hGap, @ColorInt int colorId) {
+        this(context, hGap, new ColorDrawable(colorId));
     }
 
     public BaseDividerGridItem3(Context context, int hGap, Drawable drawable) {

@@ -1,6 +1,7 @@
 package com.test.dividerline;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,21 +18,23 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity {
     MyAdapter adapter;
     RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        recyclerView=findViewById(R.id.rv);
+        recyclerView = findViewById(R.id.rv);
 
         int count = getIntent().getIntExtra("count", 1);
+        int crossPosition = getIntent().getIntExtra("crossPosition", 1);
+        final int crossNum = getIntent().getIntExtra("crossNum", 1);
 
 
-
-        List<String> list=new ArrayList<>();
-        adapter=new MyAdapter();
+        List<String> list = new ArrayList<>();
+        adapter = new MyAdapter();
         for (int i = 0; i < count; i++) {
-            list.add("第"+i+"个item");
+            list.add("第" + i + "个item");
         }
         adapter.setList(list);
 
@@ -42,23 +45,24 @@ public class ListActivity extends AppCompatActivity {
         boolean reverse = getIntent().getBooleanExtra("reverse", false);
         boolean showTop = getIntent().getBooleanExtra("showTop", false);
         boolean showBottom = getIntent().getBooleanExtra("showBottom", false);
-        switch (type){
+        switch (type) {
             case 1:
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL,reverse);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, orientation ? LinearLayoutManager.VERTICAL : LinearLayoutManager.HORIZONTAL, reverse);
                 recyclerView.setLayoutManager(linearLayoutManager);
-            break;
+                break;
             case 2:
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(this,num,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL,reverse);
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(this, num, orientation ? LinearLayoutManager.VERTICAL : LinearLayoutManager.HORIZONTAL, reverse);
                 recyclerView.setLayoutManager(gridLayoutManager);
-            break;
+                break;
             case 3:
-                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(num,orientation?LinearLayoutManager.VERTICAL:LinearLayoutManager.HORIZONTAL);
+                adapter.needRandomHeight();
+                StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(num, orientation ? LinearLayoutManager.VERTICAL : LinearLayoutManager.HORIZONTAL);
                 staggeredGridLayoutManager.setReverseLayout(reverse);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
                 break;
         }
 
-        BaseDividerGridItem3 baseDividerGridItem = new BaseDividerGridItem3(this, 30,R.color.colorAccent3);
+        BaseDividerGridItem3 baseDividerGridItem = new BaseDividerGridItem3(this, 30, ContextCompat.getColor(this,R.color.colorAccent3));
         baseDividerGridItem.setShowFirstLine(showTop);
         baseDividerGridItem.setShowLastLine(showBottom);
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,74 +11,73 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <RadioButton
             android:id="@+id/rb1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="vertical"
             android:checked="true"
-            />
+            android:text="vertical" />
+
         <RadioButton
             android:id="@+id/rb2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="horizontal"
-            />
+            android:text="horizontal" />
     </RadioGroup>
+
     <CheckBox
         android:id="@+id/cbReverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="是否反向"
-        />
+        android:text="是否反向" />
+
     <CheckBox
         android:id="@+id/cbShowTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="显示LinearLayoutManager TopLine"
-        />
+        android:text="显示LinearLayoutManager TopLine" />
+
     <CheckBox
         android:id="@+id/cbShowBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="显示LinearLayoutManager BottomLine"
-        />
+        android:text="显示LinearLayoutManager BottomLine" />
+
     <Button
         android:id="@+id/btType1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="LinearLayoutManager"
-        android:textAllCaps="false"
-        />
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btType2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="GridLayoutManager"
-        android:textAllCaps="false"
-        />
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btType3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="StaggeredGridLayoutManager"
-        android:textAllCaps="false"
-        />
+        android:textAllCaps="false" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        >
+        android:orientation="horizontal">
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="列数："
-            />
+            android:layout_weight="1"
+            android:text="列数：" />
+
         <EditText
             android:id="@+id/etNum"
             android:layout_width="100dp"
@@ -88,23 +86,58 @@
             android:imeOptions="actionNext"
             android:inputType="number"
             android:text="1"
-            android:textSize="13sp"
-            />
+            android:textSize="13sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="item数量："
-            />
+            android:ems="6"
+            android:text="item数量：" />
+
         <EditText
             android:id="@+id/etCount"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="50dp"
             android:gravity="center_vertical"
             android:imeOptions="actionNext"
             android:inputType="number"
             android:text="1"
-            android:textSize="13sp"
-            />
+            android:textSize="13sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="水平间距" />
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/sbHGap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="100" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="垂直间距" />
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/sbVGap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="100" />
+    </LinearLayout>
 </LinearLayout>
