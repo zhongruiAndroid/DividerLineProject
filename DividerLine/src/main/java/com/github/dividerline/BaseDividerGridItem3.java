@@ -160,37 +160,26 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         int spanCount = getSpanCount(parent);
         boolean isVerticalList = isVerticalList(parent);
 
-
         /********************************list*********************************/
         if (isLinearLayoutManager(parent)) {
             //list
-            //垂直列表
-            if (isVerticalList) {
-                if (reverseLayout) {
-                    setListReverseOffsets(outRect, itemPosition, childCount);
-                } else {
-                    setListOffsets(outRect, itemPosition, childCount);
-                }
-                return;
-            }
-
-            //横向列表
-            if (reverseLayout) {
-                setListReverseOffsetsHorizontal(outRect, itemPosition, childCount);
-            } else {
-                setListOffsetsHorizontal(outRect, itemPosition, childCount);
-            }
+            //默认垂直方向列表
+            setListOffsets(outRect, itemPosition, childCount);
+            /*如果是垂直反向需要改变间隔位置*/
+            changeRectForVerticalAndReverse(outRect,isVerticalList,reverseLayout);
+            /*如果是横向列表，也需要改变间隔位置*/
+            changeRectForHorizontalAndReverse(outRect,false,isVerticalList,reverseLayout);
             return;
         }
 
         /********************************grid*********************************/
         if (isGridLayoutManager(parent)) {
             //grid
-            if (reverseLayout) {
-                setGridReverseOffsets(outRect, itemPosition, childCount, spanCount);
-            } else {
-                setGridOffsets(outRect, itemPosition, childCount, spanCount);
-            }
+            setGridOffsets(outRect, itemPosition, childCount, spanCount);
+            /*如果是垂直反向需要改变间隔位置*/
+            changeRectForVerticalAndReverse(outRect,isVerticalList,reverseLayout);
+            /*如果是横向列表，也需要改变间隔位置*/
+            changeRectForHorizontalAndReverse(outRect,true,isVerticalList,reverseLayout);
             return;
         }
 
@@ -198,15 +187,66 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         /********************************StaggeredGrid*********************************/
         if (isStaggeredGridLayoutManager(parent)) {
             //grid
-            if (reverseLayout) {
-                setGridReverseOffsets(outRect, itemPosition, childCount, spanCount);
-            } else {
-                setGridOffsets(outRect, itemPosition, childCount, spanCount);
-            }
+            setGridOffsets(outRect, itemPosition, childCount, spanCount);
+            /*如果是垂直反向需要改变间隔位置*/
+            changeRectForVerticalAndReverse(outRect,isVerticalList,reverseLayout);
+            /*如果是横向列表，也需要改变间隔位置*/
+            changeRectForHorizontalAndReverse(outRect,true,isVerticalList,reverseLayout);
             return;
         }
     }
 
+    /*如果是垂直列表，改变对应位置的间隔*/
+    private void changeRectForVerticalAndReverse(Rect outRect,boolean isVerticalList,boolean isReverse){
+        if (isVerticalList&&isReverse) {
+            //垂直反向的话 底 上交换位置
+            int top=outRect.top;
+            int bottom=outRect.bottom;
+            outRect.top=bottom;
+            outRect.bottom=top;
+        }
+    }
+    /*如果是横向列表，改变对应位置的间隔*/
+    private void changeRectForHorizontalAndReverse(Rect outRect,boolean isGridList,boolean isVerticalList,boolean isReverse){
+        if(isVerticalList){
+            return;
+        }
+        if(isGridList){
+            //grid
+            if (isReverse) {
+                //如果是横向列表
+                /*(反向)左边间距变成上边间距*/
+                /*(反向)上边间距变成左边间距*/
+                /*(反向)右边间距变成下边间距*/
+                int left=outRect.left;
+                int bottom=outRect.bottom;
+                int right=outRect.right;
+                outRect.set(bottom,left,0,right);
+            }else{
+                //如果是横向列表
+                /*(顺向)左边间距变成下边间距*/
+                /*(顺向)下边间距变成右边间距*/
+                /*(顺向)右边间距变成上边间距*/
+                int left=outRect.left;
+                int bottom=outRect.bottom;
+                int right=outRect.right;
+                outRect.set(0,right,bottom,left);
+            }
+            return;
+        }
+
+        //list
+        //如果是横向列表
+        /*(顺向)间距位置：上变左，下变右*/
+        /*(反向)间距位置：上变右，下变左*/
+        int top=outRect.top;
+        int bottom=outRect.bottom;
+        if (isReverse) {
+            outRect.set(bottom,0,top,0);
+        }else{
+            outRect.set(top,0,bottom,0);
+        }
+    }
     private void drawGridLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
         int spanCount = 0;
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
@@ -393,7 +433,13 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
     }
 
     private boolean isVerticalList(RecyclerView parent) {
-        return ((LinearLayoutManager) parent.getLayoutManager()).getOrientation() == LinearLayoutManager.VERTICAL;
+        LayoutManager layoutManager = parent.getLayoutManager();
+        if(layoutManager instanceof LinearLayoutManager){
+            return ((LinearLayoutManager) parent.getLayoutManager()).getOrientation() == LinearLayoutManager.VERTICAL;
+        }else if(layoutManager instanceof StaggeredGridLayoutManager){
+            return ((StaggeredGridLayoutManager) parent.getLayoutManager()).getOrientation() == LinearLayoutManager.VERTICAL;
+        }
+        return true;
     }
 
     private int getSpanCount(RecyclerView parent) {
@@ -527,27 +573,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
     }
 
-    private void setListReverseOffsetsHorizontal(Rect outRect, int itemPosition, int childCount) {
-        //反向以绘制item的top部位
-        //第一个item
-        if (itemPosition == 0) {
-            if (isShowFirstLine()) {
-                //是否显示第一个item的底部分割线(反向的原因)
-                outRect.set(0, getVGap(), 0, getVGap());
-            } else {
-                outRect.set(0, getVGap(), 0, 0);
-            }
-        } else if (itemPosition == childCount - 1) {
-            //最后一个item
-            if (isShowLastLine()) {
-                //是否显示最后一个item的上面分割线(反向的原因)
-                outRect.set(0, getVGap(), 0, 0);
-            }
-        } else {
-            //其他item正常显示上面部分割线(反向的原因)
-            outRect.set(0, getVGap(), 0, 0);
-        }
-    }
+
 
     private void setListOffsets(Rect outRect, int itemPosition, int childCount) {
         //顺向以绘制item的bottom部位
@@ -571,27 +597,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
     }
 
-    private void setListOffsetsHorizontal(Rect outRect, int itemPosition, int childCount) {
-        //顺向以绘制item的bottom部位
-        //第一个item
-        if (itemPosition == 0) {
-            if (isShowFirstLine()) {
-                //是否显示第一个item的顶部分割线
-                outRect.set(getVGap(), 0, getVGap(), 0);
-            } else {
-                outRect.set(0, 0, getVGap(), 0);
-            }
-        } else if (itemPosition == childCount - 1) {
-            //最后一个item
-            if (isShowLastLine()) {
-                //是否显示最后一个item的底部分割线
-                outRect.set(0, 0, getVGap(),0);
-            }
-        } else {
-            //其他item正常显示底部分割线
-            outRect.set(0, 0, getVGap(),0);
-        }
-    }
+
 
     private boolean isLinearLayoutManager(RecyclerView parent) {
         return parent.getLayoutManager() instanceof LinearLayoutManager && (parent.getLayoutManager() instanceof GridLayoutManager) == false;
