@@ -67,6 +67,8 @@ public class ListActivity extends AppCompatActivity {
         BaseItemDivider baseDividerGridItem = new BaseItemDivider(this, 30,ContextCompat.getColor(this,R.color.colorAccent2));
         baseDividerGridItem.setHGap(hGap);
         baseDividerGridItem.setVGap(vGap);
+
+//        baseDividerGridItem.setShowBoth();
         baseDividerGridItem.setShowFirstLine(showTop);
         baseDividerGridItem.setShowLastLine(showBottom);
 

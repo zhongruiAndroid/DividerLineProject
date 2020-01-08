@@ -32,7 +32,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
     private boolean showLastLine;
     private boolean isTransparentDrawable;
     public BaseItemDivider(Context context) {
-        this(context, -1);
+        this(context,0,null);
     }
     public BaseItemDivider(Context context, int hGap) {
         this(context, hGap, Color.TRANSPARENT);
@@ -270,7 +270,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
         }
     }
 
-    public void drawHorizontalLine(int position, Canvas c, View child, int spanCount, boolean isReverseLayout, boolean isVerticalList) {
+    private void drawHorizontalLine(int position, Canvas c, View child, int spanCount, boolean isReverseLayout, boolean isVerticalList) {
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
         if (isVerticalList) {
             int top = child.getBottom() + params.bottomMargin;
@@ -333,7 +333,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
 
     }
 
-    public void drawVerticalLine(int position, Canvas c, View child, int spanCount, int childCount, boolean isReverseLayout, boolean isVerticalList) {
+    private void drawVerticalLine(int position, Canvas c, View child, int spanCount, int childCount, boolean isReverseLayout, boolean isVerticalList) {
         /*为了保证每个item占有的宽度一致，则每个item左右分别画半个间距竖线，所以需要分别画两跟竖线*/
         int vGap = getHGapHalf();
 
@@ -498,7 +498,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
 
     }
 
-    public void drawHorizontalFirstLine(Canvas c, RecyclerView parent, View child, RecyclerView.LayoutParams params, boolean isReverseLayout, boolean verticalList) {
+    private void drawHorizontalFirstLine(Canvas c, RecyclerView parent, View child, RecyclerView.LayoutParams params, boolean isReverseLayout, boolean verticalList) {
         int left;
         int right;
         int bottom;

@@ -14,3 +14,4 @@ gradle.properties
 .svn
 build/
 help.gradle
+!demo.apk
