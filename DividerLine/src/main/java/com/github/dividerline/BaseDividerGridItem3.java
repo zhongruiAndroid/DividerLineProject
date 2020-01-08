@@ -166,9 +166,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             //默认垂直方向列表
             setListOffsets(outRect, itemPosition, childCount);
             /*如果是垂直反向需要改变间隔位置*/
-            changeRectForVerticalAndReverse(outRect,isVerticalList,reverseLayout);
+            changeRectForVerticalAndReverse(outRect, isVerticalList, reverseLayout);
             /*如果是横向列表，也需要改变间隔位置*/
-            changeRectForHorizontalAndReverse(outRect,false,isVerticalList,reverseLayout);
+            changeRectForHorizontalAndReverse(outRect, false, isVerticalList, reverseLayout);
             return;
         }
 
@@ -177,9 +177,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             //grid
             setGridOffsets(outRect, itemPosition, childCount, spanCount);
             /*如果是垂直反向需要改变间隔位置*/
-            changeRectForVerticalAndReverse(outRect,isVerticalList,reverseLayout);
+            changeRectForVerticalAndReverse(outRect, isVerticalList, reverseLayout);
             /*如果是横向列表，也需要改变间隔位置*/
-            changeRectForHorizontalAndReverse(outRect,true,isVerticalList,reverseLayout);
+            changeRectForHorizontalAndReverse(outRect, true, isVerticalList, reverseLayout);
             return;
         }
 
@@ -189,48 +189,49 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             //grid
             setGridOffsets(outRect, itemPosition, childCount, spanCount);
             /*如果是垂直反向需要改变间隔位置*/
-            changeRectForVerticalAndReverse(outRect,isVerticalList,reverseLayout);
+            changeRectForVerticalAndReverse(outRect, isVerticalList, reverseLayout);
             /*如果是横向列表，也需要改变间隔位置*/
-            changeRectForHorizontalAndReverse(outRect,true,isVerticalList,reverseLayout);
+            changeRectForHorizontalAndReverse(outRect, true, isVerticalList, reverseLayout);
             return;
         }
     }
 
     /*如果是垂直列表，改变对应位置的间隔*/
-    private void changeRectForVerticalAndReverse(Rect outRect,boolean isVerticalList,boolean isReverse){
-        if (isVerticalList&&isReverse) {
+    private void changeRectForVerticalAndReverse(Rect outRect, boolean isVerticalList, boolean isReverse) {
+        if (isVerticalList && isReverse) {
             //垂直反向的话 底 上交换位置
-            int top=outRect.top;
-            int bottom=outRect.bottom;
-            outRect.top=bottom;
-            outRect.bottom=top;
+            int top = outRect.top;
+            int bottom = outRect.bottom;
+            outRect.top = bottom;
+            outRect.bottom = top;
         }
     }
+
     /*如果是横向列表，改变对应位置的间隔*/
-    private void changeRectForHorizontalAndReverse(Rect outRect,boolean isGridList,boolean isVerticalList,boolean isReverse){
-        if(isVerticalList){
+    private void changeRectForHorizontalAndReverse(Rect outRect, boolean isGridList, boolean isVerticalList, boolean isReverse) {
+        if (isVerticalList) {
             return;
         }
-        if(isGridList){
+        if (isGridList) {
             //grid
             if (isReverse) {
                 //如果是横向列表
                 /*(反向)左边间距变成上边间距*/
                 /*(反向)上边间距变成左边间距*/
                 /*(反向)右边间距变成下边间距*/
-                int left=outRect.left;
-                int bottom=outRect.bottom;
-                int right=outRect.right;
-                outRect.set(bottom,left,0,right);
-            }else{
+                int left = outRect.left;
+                int bottom = outRect.bottom;
+                int right = outRect.right;
+                outRect.set(bottom, left, 0, right);
+            } else {
                 //如果是横向列表
                 /*(顺向)左边间距变成下边间距*/
                 /*(顺向)下边间距变成右边间距*/
                 /*(顺向)右边间距变成上边间距*/
-                int left=outRect.left;
-                int bottom=outRect.bottom;
-                int right=outRect.right;
-                outRect.set(0,right,bottom,left);
+                int left = outRect.left;
+                int bottom = outRect.bottom;
+                int right = outRect.right;
+                outRect.set(0, right, bottom, left);
             }
             return;
         }
@@ -239,14 +240,15 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         //如果是横向列表
         /*(顺向)间距位置：上变左，下变右*/
         /*(反向)间距位置：上变右，下变左*/
-        int top=outRect.top;
-        int bottom=outRect.bottom;
+        int top = outRect.top;
+        int bottom = outRect.bottom;
         if (isReverse) {
-            outRect.set(bottom,0,top,0);
-        }else{
-            outRect.set(top,0,bottom,0);
+            outRect.set(bottom, 0, top, 0);
+        } else {
+            outRect.set(top, 0, bottom, 0);
         }
     }
+
     private void drawGridLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
         int spanCount = 0;
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
@@ -366,26 +368,27 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
     private void drawLinearLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
         final int childCount = parent.getChildCount();
         boolean isReverseLayout = isReverseLayout(parent);
+        boolean verticalList = isVerticalList(parent);
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
             //是否绘制第一个item顶部
             if (i == 0 && isShowFirstLine()) {
-                drawHorizontalFirstLine(c, parent, params, isReverseLayout);
+                drawHorizontalFirstLine(c, parent, params, isReverseLayout,verticalList);
             }
             if (i < childCount - 1) {
-                drawHorizontalBottomLine(c, parent, child, params, isReverseLayout);
+                drawHorizontalBottomLine(c, parent, child, params, isReverseLayout,verticalList);
             } else {
                 if (isShowLastLine()) {
                     //是否绘制最后一个item的底部
-                    drawHorizontalBottomLine(c, parent, child, params, isReverseLayout);
+                    drawHorizontalBottomLine(c, parent, child, params, isReverseLayout,verticalList);
                 }
             }
         }
     }
 
-    private void drawHorizontalBottomLine(Canvas c, RecyclerView parent, View child, RecyclerView.LayoutParams params, boolean isReverseLayout) {
+    private void drawHorizontalBottomLine(Canvas c, RecyclerView parent, View child, RecyclerView.LayoutParams params, boolean isReverseLayout,boolean  verticalList) {
         final int left = parent.getPaddingLeft();
         final int right = parent.getWidth() - parent.getPaddingRight();
         final int top;
@@ -401,7 +404,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         dividerDrawable.draw(c);
     }
 
-    public void drawHorizontalFirstLine(Canvas c, RecyclerView parent, RecyclerView.LayoutParams params, boolean isReverseLayout) {
+    public void drawHorizontalFirstLine(Canvas c, RecyclerView parent, RecyclerView.LayoutParams params, boolean isReverseLayout,boolean  verticalList) {
         final View child;
         final int left;
         final int right;
@@ -434,9 +437,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
 
     private boolean isVerticalList(RecyclerView parent) {
         LayoutManager layoutManager = parent.getLayoutManager();
-        if(layoutManager instanceof LinearLayoutManager){
+        if (layoutManager instanceof LinearLayoutManager) {
             return ((LinearLayoutManager) parent.getLayoutManager()).getOrientation() == LinearLayoutManager.VERTICAL;
-        }else if(layoutManager instanceof StaggeredGridLayoutManager){
+        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
             return ((StaggeredGridLayoutManager) parent.getLayoutManager()).getOrientation() == LinearLayoutManager.VERTICAL;
         }
         return true;
@@ -574,7 +577,6 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
     }
 
 
-
     private void setListOffsets(Rect outRect, int itemPosition, int childCount) {
         //顺向以绘制item的bottom部位
         //第一个item
@@ -596,7 +598,6 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             outRect.set(0, 0, 0, getVGap());
         }
     }
-
 
 
     private boolean isLinearLayoutManager(RecyclerView parent) {
