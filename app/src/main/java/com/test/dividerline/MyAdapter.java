@@ -22,12 +22,30 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+
+        if(isGrid()){
+            if(isVertical()){
+                layoutParams.width= ViewGroup.MarginLayoutParams.MATCH_PARENT;
+            }else{
+                layoutParams.width=dp2px(viewGroup.getContext(),60);
+            }
+        }else{
+            if(isVertical()){
+                layoutParams.width= ViewGroup.MarginLayoutParams.MATCH_PARENT;
+            }else{
+                layoutParams.width=dp2px(viewGroup.getContext(),60);
+            }
+        }
+
         if(needRandomHeight){
-            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
             layoutParams.height=dp2px(viewGroup.getContext(),50,120);
         }
         MyHolder myHolder=new MyHolder(view);
         return myHolder;
+    }
+    private int dp2px(Context context,int Value){
+        return (int) (context.getResources().getDisplayMetrics().density * Value);
     }
     private int dp2px(Context context,int fromValue,int toValue){
         int from = (int) (context.getResources().getDisplayMetrics().density * fromValue);
@@ -56,6 +74,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
     }
 
     private boolean needRandomHeight;
+    private boolean isGrid;
+    private boolean isVertical=true;
+
+    public boolean isGrid() {
+        return isGrid;
+    }
+
+    public void setGrid(boolean grid) {
+        isGrid = grid;
+    }
+
+    public boolean isVertical() {
+        return isVertical;
+    }
+
+    public void setVertical(boolean vertical) {
+        isVertical = vertical;
+    }
+
     public void needRandomHeight(){
         needRandomHeight=true;
     }

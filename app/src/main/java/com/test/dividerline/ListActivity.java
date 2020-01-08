@@ -45,17 +45,21 @@ public class ListActivity extends AppCompatActivity {
         boolean reverse = getIntent().getBooleanExtra("reverse", false);
         boolean showTop = getIntent().getBooleanExtra("showTop", false);
         boolean showBottom = getIntent().getBooleanExtra("showBottom", false);
+        adapter.setVertical(orientation);
         switch (type) {
             case 1:
+                adapter.setGrid(false);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, orientation ? LinearLayoutManager.VERTICAL : LinearLayoutManager.HORIZONTAL, reverse);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 break;
             case 2:
+                adapter.setGrid(true);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(this, num, orientation ? LinearLayoutManager.VERTICAL : LinearLayoutManager.HORIZONTAL, reverse);
                 recyclerView.setLayoutManager(gridLayoutManager);
                 break;
             case 3:
                 adapter.needRandomHeight();
+                adapter.setGrid(true);
                 StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(num, orientation ? LinearLayoutManager.VERTICAL : LinearLayoutManager.HORIZONTAL);
                 staggeredGridLayoutManager.setReverseLayout(reverse);
                 recyclerView.setLayoutManager(staggeredGridLayoutManager);
