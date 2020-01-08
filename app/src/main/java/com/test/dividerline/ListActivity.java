@@ -7,10 +7,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
 
-import com.github.dividerline.BaseDividerGridItem;
-import com.github.dividerline.BaseDividerGridItem3;
+import com.github.dividerline.BaseItemDivider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +64,7 @@ public class ListActivity extends AppCompatActivity {
                 break;
         }
 
-        BaseDividerGridItem3 baseDividerGridItem = new BaseDividerGridItem3(this, 30,ContextCompat.getColor(this,R.color.colorAccent2));
+        BaseItemDivider baseDividerGridItem = new BaseItemDivider(this, 30,ContextCompat.getColor(this,R.color.colorAccent2));
         baseDividerGridItem.setHGap(hGap);
         baseDividerGridItem.setVGap(vGap);
         baseDividerGridItem.setShowFirstLine(showTop);

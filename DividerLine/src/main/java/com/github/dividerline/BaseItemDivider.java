@@ -8,22 +8,19 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.RecyclerView.State;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 
 
 /**
  * @author zhongrui
  */
-public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
+public class BaseItemDivider extends RecyclerView.ItemDecoration {
     private String TAG = this.getClass().getSimpleName();
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private Drawable dividerDrawable;
@@ -39,20 +36,20 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
 
     private boolean isTransparentDrawable;
 
-    public BaseDividerGridItem3(Context context) {
+    public BaseItemDivider(Context context) {
         this(context, -1);
     }
 
-    public BaseDividerGridItem3(Context context, int hGap) {
+    public BaseItemDivider(Context context, int hGap) {
         this(context, hGap, Color.TRANSPARENT);
     }
 
-    public BaseDividerGridItem3(Context context, int hGap, @ColorInt int colorId) {
+    public BaseItemDivider(Context context, int hGap, @ColorInt int colorId) {
         this(context, hGap, new ColorDrawable(colorId));
         isTransparentDrawable = (colorId == Color.TRANSPARENT);
     }
 
-    public BaseDividerGridItem3(Context context, int hGap, Drawable drawable) {
+    public BaseItemDivider(Context context, int hGap, Drawable drawable) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         if (drawable == null) {
             dividerDrawable = a.getDrawable(0);
@@ -269,9 +266,10 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             child = parent.getChildAt(i);
 
-            //画竖线用水平间距hGap(如果是横向列表，就是画横线)
-            drawVerticalLine(i, c, child, spanCount, childCount, isReverseLayout, verticalList);
-
+            if(spanCount>1){
+                //画竖线用水平间距hGap(如果是横向列表，就是画横线)
+                drawVerticalLine(i, c, child, spanCount, childCount, isReverseLayout, verticalList);
+            }
             //最后一行不画横线
             if (isGridLastRaw(i, spanCount, childCount)) {
                 continue;
@@ -305,6 +303,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
                 left = left - getHGapHalf();
                 right = right + getHGapHalf();
             }
+            if(spanCount<=1){
+                right=right-getHGapHalf();
+            }
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(c);
             return;
@@ -333,7 +334,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             top = top - getHGapHalf();
             bottom = bottom + getHGapHalf();
         }
-
+        if(spanCount<=1){
+            bottom=bottom-getHGapHalf();
+        }
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
 
