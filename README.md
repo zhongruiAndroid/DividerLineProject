@@ -34,4 +34,7 @@ baseDividerGridItem.setShowBoth();
 //不管是哪种LayoutManager不需要额外判断,只需要执行这个方法,内部自动判断是否横向纵向以及反向
 recyclerView.addItemDecoration(baseDividerGridItem);
 ```
+#### 瀑布流item目前只提供设置间距,没设置颜色
+
+
 <img src="https://github.com/zhongruiAndroid/DividerLineProject/blob/master/image/image.jpg" alt="image" width="auto" height="640" >
