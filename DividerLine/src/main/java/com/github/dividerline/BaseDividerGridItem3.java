@@ -261,108 +261,184 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
         int childCount = parent.getChildCount();
         boolean isReverseLayout = isReverseLayout(parent);
+        boolean verticalList = isVerticalList(parent);
         View child;
         for (int i = 0; i < childCount; i++) {
             child = parent.getChildAt(i);
 
             //画竖线用水平间距hGap
-            drawVerticalLine(i, c, child, spanCount, childCount, isReverseLayout);
+            drawVerticalLine(i, c, child, spanCount, childCount, isReverseLayout, verticalList);
 
             //最后一行不画横线
             if (isGridLastRaw(i, spanCount, childCount)) {
                 continue;
             }
-            //画横线用垂直间距vGap
-            drawHorizontalLine(i, c, child, spanCount, isReverseLayout);
+            //画横线用垂直间距vGap(如果是横向列表，就是画竖线)
+            drawHorizontalLine(i, c, child, spanCount, isReverseLayout, verticalList);
         }
     }
 
-    public void drawHorizontalLine(int position, Canvas c, View child, int spanCount, boolean isReverseLayout) {
-        RecyclerView.LayoutParams params;
-        params = (RecyclerView.LayoutParams) child.getLayoutParams();
+    public void drawHorizontalLine(int position, Canvas c, View child, int spanCount, boolean isReverseLayout, boolean isVerticalList) {
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        if (isVerticalList) {
+            int top = child.getBottom() + params.bottomMargin;
+            int bottom = top + getVGap();
+            int left = child.getLeft() - params.leftMargin;
+            int right = child.getRight() + params.rightMargin;
 
-        int top = child.getBottom() + params.bottomMargin;
-        int bottom = top + getVGap();
-        int left = child.getLeft() - params.leftMargin;
-        int right = child.getRight() + params.rightMargin;
+            if (isReverseLayout) {
+                bottom = child.getTop() - params.topMargin;
+                top = bottom - getVGap();
+            }
+
+            if (isGridLeftItem(position, spanCount)) {
+                //顺向列表左边部分的item
+                right = right + getHGapHalf();
+            } else if (isGridRightItem(position, spanCount)) {
+                //顺向列表右边部分的item
+                left = left - getHGapHalf();
+            } else {
+                //顺向列表中间部分的item
+                left = left - getHGapHalf();
+                right = right + getHGapHalf();
+            }
+            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.draw(c);
+            return;
+        }
+
+
+        /*如果是横向列表，就是画竖线*/
+        int top = child.getTop() - params.topMargin;
+        int bottom = child.getBottom() + params.bottomMargin;
+
+        int left = child.getRight() + params.rightMargin;
+        int right = left + getVGap();
 
         if (isReverseLayout) {
-            bottom = child.getTop() - params.topMargin;
-            top = bottom - getVGap();
+            right = child.getLeft() - params.leftMargin;
+            left = right- getVGap();
         }
-
         if (isGridLeftItem(position, spanCount)) {
-            //顺向列表左边部分的item
-            right = right + getHGapHalf();
+            //顺向列表左边部分的item(横向列表，就是顶上一排)
+            bottom = bottom + getHGapHalf();
         } else if (isGridRightItem(position, spanCount)) {
-            //顺向列表右边部分的item
-            left = left - getHGapHalf();
+            //顺向列表右边部分的item(横向列表，就是底下一排)
+            top = top - getHGapHalf();
         } else {
             //顺向列表中间部分的item
-            left = left - getHGapHalf();
-            right = right + getHGapHalf();
+            top = top - getHGapHalf();
+            bottom = bottom + getHGapHalf();
         }
+
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
+
     }
 
-    public void drawVerticalLine(int position, Canvas c, View child, int spanCount, int childCount, boolean isReverseLayout) {
+    public void drawVerticalLine(int position, Canvas c, View child, int spanCount, int childCount, boolean isReverseLayout, boolean isVerticalList) {
         /*为了保证每个item占有的宽度一致，则每个item左右分别画半个间距竖线，所以需要分别画两跟竖线*/
         int vGap = getHGapHalf();
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-        int top = child.getTop() - params.topMargin;
-        int bottom = child.getBottom() + params.bottomMargin;
-        int left = 0;
-        int right = 0;
+        int top;
+        int bottom;
+        int left;
+        int right;
+        if (isVerticalList) {
+            top = child.getTop() - params.topMargin;
+            bottom = child.getBottom() + params.bottomMargin;
+            if (position == childCount - 1 && !isGridRightItem(position, spanCount)) {
+                //最后一个但又不是最右边的一个item
+                if (!isGridLeftItem(position, spanCount)) {
+                    //如果不是最左边的一个item
+                    //左边部分
+                    right = child.getLeft() - params.leftMargin;
+                    left = right - vGap;
 
+
+                    //绘制item左边的竖线
+                    dividerDrawable.setBounds(left, top, right, bottom);
+                    dividerDrawable.draw(c);
+                }
+
+                //右边部分
+                left = child.getRight() + params.rightMargin;
+                right = left + getHGap();
+            } else if (isGridLeftItem(position, spanCount)) {
+                //顺向列表左边部分的item
+                left = child.getRight() + params.rightMargin;
+                right = left + vGap;
+            } else if (isGridRightItem(position, spanCount)) {
+                //顺向列表右边部分的item
+                right = child.getLeft() - params.leftMargin;
+                left = right - vGap;
+            } else {
+                //顺向列表中间部分的item
+                //左边部分
+                right = child.getLeft() - params.leftMargin;
+                left = right - vGap;
+
+                //绘制item左边的竖线
+                dividerDrawable.setBounds(left, top, right, bottom);
+                dividerDrawable.draw(c);
+
+                //右边部分
+                left = child.getRight() + params.rightMargin;
+                right = left + vGap;
+            }
+
+
+            //绘制item右边的竖线
+            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.draw(c);
+            return;
+        }
+
+
+        left = child.getLeft() - params.leftMargin;
+        right = child.getRight() + params.rightMargin;
 
         if (position == childCount - 1 && !isGridRightItem(position, spanCount)) {
             //最后一个但又不是最右边的一个item
             if (!isGridLeftItem(position, spanCount)) {
                 //如果不是最左边的一个item
-                //左边部分
-                right = child.getLeft() - params.leftMargin;
-                left = right - vGap;
+                //之前的左变 下边部分
+                top = child.getBottom() + params.bottomMargin;
+                bottom = top + vGap;
 
-
-                //绘制item左边的竖线
+                //绘制之前的item左变 下边的线
                 dividerDrawable.setBounds(left, top, right, bottom);
                 dividerDrawable.draw(c);
             }
 
-
-            //右边部分
-            left = child.getRight() + params.rightMargin;
-            right = left + getHGap();
+            //之前的右边变上边部分
+            bottom = child.getTop() - params.topMargin;
+            top = bottom - getHGap();
         } else if (isGridLeftItem(position, spanCount)) {
             //顺向列表左边部分的item
-            left = child.getRight() + params.rightMargin;
-            right = left + vGap;
+            top = child.getBottom() + params.bottomMargin;
+            bottom = top + vGap;
         } else if (isGridRightItem(position, spanCount)) {
             //顺向列表右边部分的item
-            right = child.getLeft() - params.leftMargin;
-            left = right - vGap;
+            top = child.getBottom() + params.bottomMargin;
+            bottom = top + vGap;
         } else {
-            //顺向列表中间部分的item
-            //左边部分
-            right = child.getLeft() - params.leftMargin;
-            left = right - vGap;
 
-            //绘制item左边的竖线
+            top = child.getBottom() + params.bottomMargin;
+            bottom = top + vGap;
+
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(c);
 
-            //右边部分
-            left = child.getRight() + params.rightMargin;
-            right = left + vGap;
+            bottom = child.getTop() - params.topMargin;
+            top = bottom - getHGap();
         }
 
 
         //绘制item右边的竖线
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
-
     }
 
     private void drawLinearLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
