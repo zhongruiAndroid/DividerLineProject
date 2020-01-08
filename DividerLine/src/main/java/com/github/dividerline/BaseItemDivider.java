@@ -21,34 +21,26 @@ import android.view.View;
  * @author zhongrui
  */
 public class BaseItemDivider extends RecyclerView.ItemDecoration {
-    private String TAG = this.getClass().getSimpleName();
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private Drawable dividerDrawable;
     /*水平item间距*/
     private int hGap;
     /*垂直item间距*/
     private int vGap;
-
     private int hGapHalf;
-
     private boolean showFirstLine;
     private boolean showLastLine;
-
     private boolean isTransparentDrawable;
-
     public BaseItemDivider(Context context) {
         this(context, -1);
     }
-
     public BaseItemDivider(Context context, int hGap) {
         this(context, hGap, Color.TRANSPARENT);
     }
-
     public BaseItemDivider(Context context, int hGap, @ColorInt int colorId) {
         this(context, hGap, new ColorDrawable(colorId));
         isTransparentDrawable = (colorId == Color.TRANSPARENT);
     }
-
     public BaseItemDivider(Context context, int hGap, Drawable drawable) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         if (drawable == null) {
@@ -127,7 +119,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
         if (isTransparentDrawable) {
             return;
         }
-        if(isStaggeredGridLayoutManager(parent)){
+        if (isStaggeredGridLayoutManager(parent)) {
             return;
         }
         if (parent.getLayoutManager() == null) {
@@ -182,7 +174,6 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             changeRectForHorizontalAndReverse(outRect, true, isVerticalList, reverseLayout);
             return;
         }
-
 
         /********************************StaggeredGrid*********************************/
         if (isStaggeredGridLayoutManager(parent)) {
@@ -266,7 +257,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             child = parent.getChildAt(i);
 
-            if(spanCount>1){
+            if (spanCount > 1) {
                 //画竖线用水平间距hGap(如果是横向列表，就是画横线)
                 drawVerticalLine(i, c, child, spanCount, childCount, isReverseLayout, verticalList);
             }
@@ -303,8 +294,8 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
                 left = left - getHGapHalf();
                 right = right + getHGapHalf();
             }
-            if(spanCount<=1){
-                right=right-getHGapHalf();
+            if (spanCount <= 1) {
+                right = right - getHGapHalf();
             }
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(c);
@@ -334,8 +325,8 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             top = top - getHGapHalf();
             bottom = bottom + getHGapHalf();
         }
-        if(spanCount<=1){
-            bottom=bottom-getHGapHalf();
+        if (spanCount <= 1) {
+            bottom = bottom - getHGapHalf();
         }
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
@@ -394,14 +385,11 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
                 right = left + vGap;
             }
 
-
             //绘制item右边的竖线
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(c);
             return;
         }
-
-
 
         /*横向列表，之前竖向列表的左边item变成顶部item,之前的右边item变成底部item,下面的注释没改还是之前的*/
         left = child.getLeft() - params.leftMargin;
@@ -412,8 +400,8 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             if (!isGridLeftItem(position, spanCount)) {
                 //如果不是最左边的一个item
                 //左边部分
-                bottom = child.getTop()- params.topMargin;
-                top = bottom-vGap;
+                bottom = child.getTop() - params.topMargin;
+                top = bottom - vGap;
 
                 //绘制item左边的竖线
                 dividerDrawable.setBounds(left, top, right, bottom);
@@ -421,8 +409,8 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             }
 
             //右边部分
-            top=child.getBottom()+params.bottomMargin;
-            bottom=top+getHGap();
+            top = child.getBottom() + params.bottomMargin;
+            bottom = top + getHGap();
         } else if (isGridLeftItem(position, spanCount)) {
             //顺向列表左边部分的item
             top = child.getBottom() + params.bottomMargin;
@@ -433,18 +421,17 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             top = bottom - vGap;
         } else {
             //顺向列表中间部分的item
-            bottom = child.getTop()- params.topMargin;
-            top = bottom-vGap;
+            bottom = child.getTop() - params.topMargin;
+            top = bottom - vGap;
 
             //绘制item左边的竖线
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(c);
 
             //右边部分
-            top=child.getBottom()+params.bottomMargin;
-            bottom=top+vGap;
+            top = child.getBottom() + params.bottomMargin;
+            bottom = top + vGap;
         }
-
 
         //绘制item右边的竖线
         dividerDrawable.setBounds(left, top, right, bottom);
@@ -603,36 +590,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
     }
 
 
-    private void setGridReverseOffsets(Rect outRect, int itemPosition, int childCount, int spanCount) {
-        //顺向画底不画顶，反向画顶不画底
-        //最后一行
-        if (isGridLastRaw(itemPosition, spanCount, childCount)) {
-            if (isGridLeftItem(itemPosition, spanCount)) {
-                //最左边item
-                outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
-            } else if (isGridRightItem(itemPosition, spanCount)) {
-                //最右边item
-                outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
-            } else {
-                //中间item
-                outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
-            }
-        } else {
-            if (isGridLeftItem(itemPosition, spanCount)) {
-                //最左边item
-                outRect.set(getHGapHalf(), getVGap(), getHGapHalf(), 0);
-            } else if (isGridRightItem(itemPosition, spanCount)) {
-                //最右边item
-                outRect.set(getHGapHalf(), getVGap(), getHGapHalf(), 0);
-            } else {
-                //中间item
-                outRect.set(getHGapHalf(), getVGap(), getHGapHalf(), 0);
-            }
-        }
-    }
-
     private void setGridOffsets(Rect outRect, int itemPosition, int childCount, int spanCount) {
-
         //最后一行
         if (isGridLastRaw(itemPosition, spanCount, childCount)) {
             if (isGridLeftItem(itemPosition, spanCount)) {
@@ -674,30 +632,6 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
         }
         return position >= childCount - ranger;
     }
-
-    private void setListReverseOffsets(Rect outRect, int itemPosition, int childCount) {
-        //反向以绘制item的top部位
-        //第一个item
-        if (itemPosition == 0) {
-            if (isShowFirstLine()) {
-                //是否显示第一个item的底部分割线(反向的原因)
-                outRect.set(0, getVGap(), 0, getVGap());
-            } else {
-                outRect.set(0, getVGap(), 0, 0);
-            }
-        } else if (itemPosition == childCount - 1) {
-            //最后一个item
-            if (isShowLastLine()) {
-                //是否显示最后一个item的上面分割线(反向的原因)
-                outRect.set(0, getVGap(), 0, 0);
-            }
-        } else {
-            //其他item正常显示上面部分割线(反向的原因)
-            outRect.set(0, getVGap(), 0, 0);
-        }
-    }
-
-
     private void setListOffsets(Rect outRect, int itemPosition, int childCount) {
         //顺向以绘制item的bottom部位
         //第一个item
@@ -719,7 +653,6 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             outRect.set(0, 0, 0, getVGap());
         }
     }
-
 
     private boolean isLinearLayoutManager(RecyclerView parent) {
         return parent.getLayoutManager() instanceof LinearLayoutManager && (parent.getLayoutManager() instanceof GridLayoutManager) == false;
