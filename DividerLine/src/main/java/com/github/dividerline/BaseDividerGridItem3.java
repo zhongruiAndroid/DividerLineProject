@@ -373,55 +373,90 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-            //是否绘制第一个item顶部
+            //是否绘制第一个item顶部(反向就是底部)
             if (i == 0 && isShowFirstLine()) {
-                drawHorizontalFirstLine(c, parent, params, isReverseLayout,verticalList);
+                drawHorizontalFirstLine(c, parent, child, params, isReverseLayout, verticalList);
             }
             if (i < childCount - 1) {
-                drawHorizontalBottomLine(c, parent, child, params, isReverseLayout,verticalList);
+                drawHorizontalBottomLine(c, parent, child, params, isReverseLayout, verticalList);
             } else {
                 if (isShowLastLine()) {
                     //是否绘制最后一个item的底部
-                    drawHorizontalBottomLine(c, parent, child, params, isReverseLayout,verticalList);
+                    drawHorizontalBottomLine(c, parent, child, params, isReverseLayout, verticalList);
                 }
             }
         }
     }
 
-    private void drawHorizontalBottomLine(Canvas c, RecyclerView parent, View child, RecyclerView.LayoutParams params, boolean isReverseLayout,boolean  verticalList) {
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
-        final int top;
-        final int bottom;
+    private void drawHorizontalBottomLine(Canvas c, RecyclerView parent, View child, RecyclerView.LayoutParams params, boolean isReverseLayout, boolean verticalList) {
+        int left;
+        int right;
+        int top;
+        int bottom;
+
+        if (verticalList) {
+            left = parent.getPaddingLeft();
+            right = parent.getWidth() - parent.getPaddingRight();
+            if (isReverseLayout) {
+                bottom = child.getTop() - params.topMargin;
+                top = bottom - getVGap();
+            } else {
+                top = child.getBottom() + params.bottomMargin;
+                bottom = top + getVGap();
+            }
+            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.draw(c);
+
+            return;
+        }
+
+        top = parent.getPaddingTop();
+        bottom = parent.getHeight() - parent.getPaddingBottom();
+
         if (isReverseLayout) {
-            bottom = child.getTop() - params.topMargin;
-            top = bottom - getVGap();
+            right = child.getLeft() - params.leftMargin;
+            left = right - getVGap();
         } else {
-            top = child.getBottom() + params.bottomMargin;
-            bottom = top + getVGap();
+            left = child.getRight() + params.rightMargin;
+            right = left + getVGap();
         }
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
+
     }
 
-    public void drawHorizontalFirstLine(Canvas c, RecyclerView parent, RecyclerView.LayoutParams params, boolean isReverseLayout,boolean  verticalList) {
-        final View child;
-        final int left;
-        final int right;
-        final int bottom;
-        final int top;
+    public void drawHorizontalFirstLine(Canvas c, RecyclerView parent, View child, RecyclerView.LayoutParams params, boolean isReverseLayout, boolean verticalList) {
+        int left;
+        int right;
+        int bottom;
+        int top;
+
+        if (verticalList) {
+            left = parent.getPaddingLeft();
+            right = parent.getWidth() - parent.getPaddingRight();
+
+            if (isReverseLayout) {
+                top = child.getBottom() + params.bottomMargin;
+                bottom = top + getVGap();
+            } else {
+                bottom = child.getTop() - params.topMargin;
+                top = bottom - getVGap();
+            }
+            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.draw(c);
+
+            return;
+        }
+
+        top = parent.getPaddingTop();
+        bottom = parent.getHeight() - parent.getPaddingBottom();
+
         if (isReverseLayout) {
-            child = parent.getChildAt(0);
-            left = parent.getPaddingLeft();
-            right = parent.getWidth() - parent.getPaddingRight();
-            top = child.getBottom() + params.bottomMargin;
-            bottom = top + getVGap();
+            left = child.getRight() + params.rightMargin;
+            right = left + getVGap();
         } else {
-            child = parent.getChildAt(0);
-            left = parent.getPaddingLeft();
-            right = parent.getWidth() - parent.getPaddingRight();
-            bottom = child.getTop() - params.topMargin;
-            top = bottom - getVGap();
+            right = child.getLeft() - params.leftMargin;
+            left = right - getVGap();
         }
         dividerDrawable.setBounds(left, top, right, bottom);
         dividerDrawable.draw(c);
