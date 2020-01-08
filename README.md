@@ -1,6 +1,6 @@
 # DividerLineProject
-### demo.apk在demo目录下
 ## [Demo.apk下载](https://raw.githubusercontent.com/zhongruiAndroid/DividerLineProject/master/demo/demo.apk "apk文件")
+### demo.apk在demo目录下
 
 ```java
 //第一个参数：Context 
@@ -35,6 +35,7 @@ baseDividerGridItem.setShowBoth();
 recyclerView.addItemDecoration(baseDividerGridItem);
 ```
 #### 瀑布流item目前只提供设置间距,没设置颜色
-
-
+<br/>
+  
+  
 <img src="https://github.com/zhongruiAndroid/DividerLineProject/blob/master/image/image.jpg" alt="image" width="auto" height="640" >
