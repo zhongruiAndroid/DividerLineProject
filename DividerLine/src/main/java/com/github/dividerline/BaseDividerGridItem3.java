@@ -130,6 +130,9 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         if (isTransparentDrawable) {
             return;
         }
+        if(isStaggeredGridLayoutManager(parent)){
+            return;
+        }
         if (parent.getLayoutManager() == null) {
             return;
         }
@@ -266,7 +269,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             child = parent.getChildAt(i);
 
-            //画竖线用水平间距hGap
+            //画竖线用水平间距hGap(如果是横向列表，就是画横线)
             drawVerticalLine(i, c, child, spanCount, childCount, isReverseLayout, verticalList);
 
             //最后一行不画横线
@@ -317,7 +320,7 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
 
         if (isReverseLayout) {
             right = child.getLeft() - params.leftMargin;
-            left = right- getVGap();
+            left = right - getVGap();
         }
         if (isGridLeftItem(position, spanCount)) {
             //顺向列表左边部分的item(横向列表，就是顶上一排)
@@ -396,6 +399,8 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
         }
 
 
+
+        /*横向列表，之前竖向列表的左边item变成顶部item,之前的右边item变成底部item,下面的注释没改还是之前的*/
         left = child.getLeft() - params.leftMargin;
         right = child.getRight() + params.rightMargin;
 
@@ -403,36 +408,38 @@ public class BaseDividerGridItem3 extends RecyclerView.ItemDecoration {
             //最后一个但又不是最右边的一个item
             if (!isGridLeftItem(position, spanCount)) {
                 //如果不是最左边的一个item
-                //之前的左变 下边部分
-                top = child.getBottom() + params.bottomMargin;
-                bottom = top + vGap;
+                //左边部分
+                bottom = child.getTop()- params.topMargin;
+                top = bottom-vGap;
 
-                //绘制之前的item左变 下边的线
+                //绘制item左边的竖线
                 dividerDrawable.setBounds(left, top, right, bottom);
                 dividerDrawable.draw(c);
             }
 
-            //之前的右边变上边部分
-            bottom = child.getTop() - params.topMargin;
-            top = bottom - getHGap();
+            //右边部分
+            top=child.getBottom()+params.bottomMargin;
+            bottom=top+getHGap();
         } else if (isGridLeftItem(position, spanCount)) {
             //顺向列表左边部分的item
             top = child.getBottom() + params.bottomMargin;
             bottom = top + vGap;
         } else if (isGridRightItem(position, spanCount)) {
             //顺向列表右边部分的item
-            top = child.getBottom() + params.bottomMargin;
-            bottom = top + vGap;
+            bottom = child.getTop() - params.topMargin;
+            top = bottom - vGap;
         } else {
+            //顺向列表中间部分的item
+            bottom = child.getTop()- params.topMargin;
+            top = bottom-vGap;
 
-            top = child.getBottom() + params.bottomMargin;
-            bottom = top + vGap;
-
+            //绘制item左边的竖线
             dividerDrawable.setBounds(left, top, right, bottom);
             dividerDrawable.draw(c);
 
-            bottom = child.getTop() - params.topMargin;
-            top = bottom - getHGap();
+            //右边部分
+            top=child.getBottom()+params.bottomMargin;
+            bottom=top+vGap;
         }
 
 

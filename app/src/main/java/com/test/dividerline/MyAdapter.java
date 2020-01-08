@@ -38,8 +38,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             }
         }
 
+
         if(needRandomHeight){
-            layoutParams.height=dp2px(viewGroup.getContext(),50,120);
+            if(isVertical()){
+                layoutParams.height=dp2px(viewGroup.getContext(),50,120);
+            }else{
+                layoutParams.width=dp2px(viewGroup.getContext(),50,120);
+            }
         }
         MyHolder myHolder=new MyHolder(view);
         return myHolder;

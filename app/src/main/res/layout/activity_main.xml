@@ -1,146 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rb1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="vertical" />
-
-        <RadioButton
-            android:id="@+id/rb2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="horizontal" />
-    </RadioGroup>
-
-    <CheckBox
-        android:id="@+id/cbReverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="是否反向" />
-
-    <CheckBox
-        android:id="@+id/cbShowTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="显示LinearLayoutManager TopLine" />
-
-    <CheckBox
-        android:id="@+id/cbShowBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="显示LinearLayoutManager BottomLine" />
-
-    <Button
-        android:id="@+id/btType1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="LinearLayoutManager"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/btType2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="GridLayoutManager"
-        android:textAllCaps="false" />
-
-    <Button
-        android:id="@+id/btType3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="StaggeredGridLayoutManager"
-        android:textAllCaps="false" />
-
+    >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="列数：" />
-
-        <EditText
-            android:id="@+id/etNum"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:imeOptions="actionNext"
-            android:inputType="number"
-            android:text="1"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="6"
-            android:text="item数量：" />
-
-        <EditText
-            android:id="@+id/etCount"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:imeOptions="actionNext"
-            android:inputType="number"
-            android:text="1"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="水平间距" />
-
-        <android.support.v7.widget.AppCompatSeekBar
-            android:id="@+id/sbHGap"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:progress="20"
-            android:max="100"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <CheckBox
+                android:id="@+id/cbReverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="是否反向" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="vertical" />
+
+                <RadioButton
+                    android:id="@+id/rb2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="horizontal" />
+            </RadioGroup>
+        </LinearLayout>
+        <CheckBox
+            android:id="@+id/cbShowTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="显示LinearLayoutManager TopLine" />
+
+        <CheckBox
+            android:id="@+id/cbShowBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="显示LinearLayoutManager BottomLine" />
+
+        <Button
+            android:id="@+id/btType1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LinearLayoutManager"
+            android:textAllCaps="false"
+            />
+
+        <Button
+            android:id="@+id/btType2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GridLayoutManager"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btType3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="StaggeredGridLayoutManager"
+            android:textAllCaps="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="列数：" />
+
+            <EditText
+                android:id="@+id/etNum"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:text="1"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="6"
+                android:text="item数量：" />
+
+            <EditText
+                android:id="@+id/etCount"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:text="50"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="水平间距" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/sbHGap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="20"
+                android:max="100"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="垂直间距" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/sbVGap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="20"
+                android:max="100"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="注意:因为设置了表格间距\n为了保证每个item所分配的宽度或者高度一致\n列表的两边增加了半个间距的距离\n如果想要列表撑满view的效果,可减少或者设置负数的margin\n比如item横向间距10dp,ui列表左边距离屏幕左边是20dp\n那么列表设置layout_marginLeft=15dp即可(20-10/2)=15"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="注意:由于瀑布流的特殊性,只设置了item间距,没设置分割线的颜色"
             />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="垂直间距" />
-
-        <android.support.v7.widget.AppCompatSeekBar
-            android:id="@+id/sbVGap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:progress="20"
-            android:max="100"/>
-    </LinearLayout>
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>
