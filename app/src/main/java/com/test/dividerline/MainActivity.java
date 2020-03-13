@@ -17,6 +17,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     EditText etNum;
     EditText etCount;
@@ -28,12 +32,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btType1;
     Button btType2;
     Button btType3;
+    EditText etStartNum;
+    EditText etEndNum;
 
     RadioButton rb1;
     RadioButton rb2;
     CheckBox cbReverse;
     CheckBox cbShowTop;
     CheckBox cbShowBottom;
+    Button btRandomPosition;
+    Random random = new Random();
+    private int temp1=-1;
+    private int temp2=-1;
+    private int temp3=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +69,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cbReverse = findViewById(R.id.cbReverse);
         cbShowTop = findViewById(R.id.cbShowTop);
         cbShowBottom = findViewById(R.id.cbShowBottom);
+
+        etStartNum = findViewById(R.id.etStartNum);
+        etEndNum = findViewById(R.id.etEndNum);
+        btRandomPosition = findViewById(R.id.btRandomPosition);
+
+        btRandomPosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = 1;
+                if (TextUtils.isEmpty(etCount.getText()) == false) {
+                    count = Integer.valueOf(etCount.getText().toString());
+                }
+                temp1 = random.nextInt(count) + 1;
+                temp2 = random.nextInt(count) + 1;
+                temp3 = random.nextInt(count) + 1;
+
+                btRandomPosition.setText("点击随机生成3个不画线的position[" + temp1 + "," + temp2 + "," + temp3 + "]");
+            }
+        });
+        btRandomPosition.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                temp1 =-1;
+                temp2 = -1;
+                temp3 = -1;
+                btRandomPosition.setText("点击随机生成3个不画线的position[0]");
+                return true;
+            }
+        });
 
     }
 
@@ -90,15 +130,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int vGap = sbVGap.getProgress();
 
+        int startNum = 0;
+        if (TextUtils.isEmpty(etStartNum.getText()) == false) {
+            startNum = Integer.valueOf(etStartNum.getText().toString());
+        }
+        int endNum = 0;
+        if (TextUtils.isEmpty(etEndNum.getText()) == false) {
+            endNum = Integer.valueOf(etEndNum.getText().toString());
+        }
+
         intent.putExtra("num", num);
         intent.putExtra("type", type);
         intent.putExtra("orientation", rb1.isChecked());
         intent.putExtra("reverse", cbReverse.isChecked());
         intent.putExtra("count", count);
-        intent.putExtra("hGap",hGap);
-        intent.putExtra("vGap",vGap);
+        intent.putExtra("hGap", hGap);
+        intent.putExtra("vGap", vGap);
         intent.putExtra("showTop", cbShowTop.isChecked());
         intent.putExtra("showBottom", cbShowBottom.isChecked());
+        intent.putExtra("startNum", startNum);
+        intent.putExtra("endNum", endNum);
+        ArrayList<Integer> list=new ArrayList<>();
+        list.add(temp1);
+        list.add(temp2);
+        list.add(temp3);
+        intent.putIntegerArrayListExtra("skipList", list);
         startActivity(intent);
     }
 

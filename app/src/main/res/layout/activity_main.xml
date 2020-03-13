@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,14 +14,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            >
+            android:orientation="horizontal">
+
             <CheckBox
                 android:id="@+id/cbReverse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="是否反向" />
+
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,6 +42,7 @@
                     android:text="horizontal" />
             </RadioGroup>
         </LinearLayout>
+
         <CheckBox
             android:id="@+id/cbShowTop"
             android:layout_width="wrap_content"
@@ -54,13 +55,65 @@
             android:layout_height="wrap_content"
             android:text="显示LinearLayoutManager BottomLine" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="不画线item只对LinearManager有效" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="不需要画线的头部item数量" />
+
+            <EditText
+                android:id="@+id/etStartNum"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:text="0"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="不需要画线的尾部item数量" />
+
+            <EditText
+                android:id="@+id/etEndNum"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:text="0"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btRandomPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="点击随机生成3个不画线的position[0]"
+            android:textAllCaps="false" />
+
         <Button
             android:id="@+id/btType1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="LinearLayoutManager"
-            android:textAllCaps="false"
-            />
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btType2"
@@ -130,9 +183,8 @@
                 android:id="@+id/sbHGap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progress="20"
                 android:max="100"
-                />
+                android:progress="20" />
         </LinearLayout>
 
         <LinearLayout
@@ -150,21 +202,21 @@
                 android:id="@+id/sbVGap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progress="20"
-                android:max="100"/>
+                android:max="100"
+                android:progress="20" />
         </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="注意:因为多列(grid和瀑布流)表格(list不受影响)设置了item间距\n为了保证每个item所分配的宽度或者高度一致\n列表的两边增加了半个间距的距离\n如果想要列表撑满view的效果,可减少或者设置负数的margin\n比如item横向间距10dp,ui列表左边距离屏幕左边是20dp\n那么列表设置layout_marginLeft=15dp即可(20-10/2)=15"
-            />
+            android:text="注意:因为多列(grid和瀑布流)表格(list不受影响)设置了item间距\n为了保证每个item所分配的宽度或者高度一致\n列表的两边增加了半个间距的距离\n如果想要列表撑满view的效果,可减少或者设置负数的margin\n比如item横向间距10dp,ui列表左边距离屏幕左边是20dp\n那么列表设置layout_marginLeft=15dp即可(20-10/2)=15" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="注意:由于瀑布流的特殊性,只设置了item间距,没设置分割线的颜色"
-            />
+            android:text="注意:由于瀑布流的特殊性,只设置了item间距,没设置分割线的颜色" />
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
