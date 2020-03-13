@@ -210,6 +210,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:text="设置LinearManager分割线margin" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="垂直时marginLeft,横向时marginTop" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/sbMarginStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="300"
+                android:progress="0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="垂直时marginRight,横向时marginBottom" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/sbMarginEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="300"
+                android:progress="0" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="注意:因为多列(grid和瀑布流)表格(list不受影响)设置了item间距\n为了保证每个item所分配的宽度或者高度一致\n列表的两边增加了半个间距的距离\n如果想要列表撑满view的效果,可减少或者设置负数的margin\n比如item横向间距10dp,ui列表左边距离屏幕左边是20dp\n那么列表设置layout_marginLeft=15dp即可(20-10/2)=15" />
 
         <TextView

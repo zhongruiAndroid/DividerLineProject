@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     AppCompatSeekBar sbHGap;
 
     AppCompatSeekBar sbVGap;
+
+    AppCompatSeekBar sbMarginStart;
+    AppCompatSeekBar sbMarginEnd;
     //    EditText etCrossPosition;
 //    EditText etCrossNum;
     Button btType1;
@@ -42,9 +45,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CheckBox cbShowBottom;
     Button btRandomPosition;
     Random random = new Random();
-    private int temp1=-1;
-    private int temp2=-1;
-    private int temp3=-1;
+    private int temp1 = -1;
+    private int temp2 = -1;
+    private int temp3 = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        etCrossNum = findViewById(R.id.etCrossNum);
         sbHGap = findViewById(R.id.sbHGap);
         sbVGap = findViewById(R.id.sbVGap);
+        sbMarginStart = findViewById(R.id.sbMarginStart);
+        sbMarginEnd = findViewById(R.id.sbMarginEnd);
         etNum = findViewById(R.id.etNum);
         etCount = findViewById(R.id.etCount);
         btType1 = findViewById(R.id.btType1);
@@ -91,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btRandomPosition.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                temp1 =-1;
+                temp1 = -1;
                 temp2 = -1;
                 temp3 = -1;
                 btRandomPosition.setText("点击随机生成3个不画线的position[0]");
@@ -139,6 +144,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             endNum = Integer.valueOf(etEndNum.getText().toString());
         }
 
+        int marginStart = sbMarginStart.getProgress();
+        int marginEnd = sbMarginEnd.getProgress();
+
         intent.putExtra("num", num);
         intent.putExtra("type", type);
         intent.putExtra("orientation", rb1.isChecked());
@@ -150,7 +158,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra("showBottom", cbShowBottom.isChecked());
         intent.putExtra("startNum", startNum);
         intent.putExtra("endNum", endNum);
-        ArrayList<Integer> list=new ArrayList<>();
+        intent.putExtra("marginStart", marginStart);
+        intent.putExtra("marginEnd", marginEnd);
+        ArrayList<Integer> list = new ArrayList<>();
         list.add(temp1);
         list.add(temp2);
         list.add(temp3);

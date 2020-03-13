@@ -29,6 +29,8 @@ public class ListActivity extends AppCompatActivity {
         int vGap = getIntent().getIntExtra("vGap", 0);
         int startNum = getIntent().getIntExtra("startNum", 0);
         int endNum = getIntent().getIntExtra("endNum", 0);
+        int marginStart = getIntent().getIntExtra("marginStart", 0);
+        int marginEnd = getIntent().getIntExtra("marginEnd", 0);
         ArrayList<Integer> skipList = getIntent().getIntegerArrayListExtra("skipList");
 
 
@@ -68,6 +70,10 @@ public class ListActivity extends AppCompatActivity {
         }
 
         BaseItemDivider baseDividerGridItem = new BaseItemDivider(this, 30,ContextCompat.getColor(this,R.color.colorAccent2));
+        baseDividerGridItem.setMarginLeft(marginStart);
+        baseDividerGridItem.setMarginTop(marginStart);
+        baseDividerGridItem.setMarginRight(marginEnd);
+        baseDividerGridItem.setMarginBottom(marginEnd);
         baseDividerGridItem.setSkipPosition(skipList);
         baseDividerGridItem.setSkipStartCount(startNum);
         baseDividerGridItem.setSkipEndCount(endNum);

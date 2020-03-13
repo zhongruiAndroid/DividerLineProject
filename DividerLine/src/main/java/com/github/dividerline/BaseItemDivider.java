@@ -511,7 +511,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
                 top = child.getBottom() + params.bottomMargin;
                 bottom = top + getVGap();
             }
-            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.setBounds(left+getMarginLeft(), top, right-getMarginRight(), bottom);
             dividerDrawable.draw(c);
 
             return;
@@ -527,7 +527,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             left = child.getRight() + params.rightMargin;
             right = left + getVGap();
         }
-        dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.setBounds(left, top+getMarginTop(), right, bottom-getMarginBottom());
         dividerDrawable.draw(c);
 
     }
@@ -549,7 +549,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
                 bottom = child.getTop() - params.topMargin;
                 top = bottom - getVGap();
             }
-            dividerDrawable.setBounds(left, top, right, bottom);
+            dividerDrawable.setBounds(left+getMarginLeft(), top, right-getMarginRight(), bottom);
             dividerDrawable.draw(c);
 
             return;
@@ -565,7 +565,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             right = child.getLeft() - params.leftMargin;
             left = right - getVGap();
         }
-        dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.setBounds(left, top+getMarginTop(), right, bottom-getMarginBottom());
         dividerDrawable.draw(c);
     }
 
