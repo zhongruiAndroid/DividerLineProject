@@ -39,3 +39,11 @@ recyclerView.addItemDecoration(baseDividerGridItem);
   
   
 <img src="https://github.com/zhongruiAndroid/DividerLineProject/blob/master/image/image.jpg" alt="image" width="auto" height="640" >
+
+
+
+
+[ ![Download](https://api.bintray.com/packages/zhongrui/mylibrary/DividerLine/images/download.svg) ](https://bintray.com/zhongrui/mylibrary/DividerLine/_latestVersion)
+```gradle
+implementation 'com.github:DividerLine:版本号看上面'
+```
