@@ -233,6 +233,23 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
         return false;
     }
 
+    /*是否忽略头部局*/
+    private boolean isSkipStart(int itemPosition, int childCount) {
+        if (itemPosition -getSkipStartCount()<0) {
+            /*如果存在需要忽略的item,不计算偏移量*/
+            return true;
+        }
+        return false;
+    }
+    /*是否忽略尾部局*/
+    private boolean isSkipEnd(int itemPosition, int childCount) {
+        if (itemPosition >= (childCount - getSkipEndCount())) {
+            /*如果存在需要忽略的item,不计算偏移量*/
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onDraw(Canvas c, RecyclerView parent, State state) {
         if (isTransparentDrawable) {
@@ -286,7 +303,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
         if (DividerHelper.isGridLayoutManager(parent)) {
             //真实position减去需要忽略分割线的item(头布局)数量
             int tempPosition = itemPosition - getSkipStartCount();
-            if (needSkipPosition(itemPosition, childCount)) {
+            if (isSkipStart(itemPosition, childCount)||isSkipEnd(itemPosition, childCount)) {
                 //头布局和尾部局的左右两侧需要分割空间，和列表左边、右边item类似
                 outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
                 return;
@@ -306,7 +323,7 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
         if (DividerHelper.isStaggeredGridLayoutManager(parent)) {
             //真实position减去需要忽略分割线的item(头布局)数量
             int tempPosition = itemPosition - getSkipStartCount();
-            if (needSkipPosition(itemPosition, childCount)) {
+            if (isSkipStart(itemPosition, childCount)||isSkipEnd(itemPosition, childCount)) {
                 //头布局和尾部局的左右两侧需要分割空间，和列表左边、右边item类似
                 outRect.set(getHGapHalf(), 0, getHGapHalf(), 0);
                 return;
