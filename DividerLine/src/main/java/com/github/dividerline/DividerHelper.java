@@ -1,12 +1,10 @@
 package com.github.dividerline;
 
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
 
 class DividerHelper {
     /*如果是垂直列表，改变对应位置的间隔*/
@@ -129,12 +127,13 @@ class DividerHelper {
         return (position + 1) % spanCount == 0;
     }
 
-    protected static boolean isGridLastRaw(int position, int spanCount, int childCount) {
-        int ranger = childCount % spanCount;
+    protected static boolean isGridLastRaw(int position, int spanCount, int itemCount, int skipCount) {
+        itemCount=itemCount-skipCount;
+        int ranger = itemCount % spanCount;
         if (ranger == 0) {
             ranger = spanCount;
         }
-        return position >= childCount - ranger;
+        return position >= itemCount - ranger;
     }
 
 
