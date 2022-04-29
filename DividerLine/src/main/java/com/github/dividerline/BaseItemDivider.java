@@ -279,7 +279,11 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
         boolean reverseLayout = DividerHelper.isReverseLayout(parent);
 
         int itemPosition = parent.getChildAdapterPosition(view);
-        int childCount = parent.getAdapter().getItemCount();
+        RecyclerView.Adapter adapter = parent.getAdapter();
+        if(adapter==null){
+            return;
+        }
+        int childCount = adapter.getItemCount();
 
         int spanCount = DividerHelper.getSpanCount(parent);
         boolean isVerticalList = DividerHelper.isVerticalList(parent);
@@ -497,7 +501,11 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
 
     private void drawLinearLayoutHorizontalDividerLine(Canvas c, RecyclerView parent) {
         int childCount = parent.getChildCount();
-        int itemCount = parent.getAdapter().getItemCount();
+        RecyclerView.Adapter adapter = parent.getAdapter();
+        if(adapter==null){
+            return;
+        }
+        int itemCount = adapter.getItemCount();
         boolean isReverseLayout = DividerHelper.isReverseLayout(parent);
         boolean verticalList = DividerHelper.isVerticalList(parent);
         for (int i = 0; i < childCount; i++) {
@@ -607,7 +615,11 @@ public class BaseItemDivider extends RecyclerView.ItemDecoration {
             return;
         }
         int childCount = parent.getChildCount();
-        int itemCount = parent.getAdapter().getItemCount();
+        RecyclerView.Adapter adapter = parent.getAdapter();
+        if(adapter==null){
+            return;
+        }
+        int itemCount = adapter.getItemCount();
         boolean isReverseLayout = DividerHelper.isReverseLayout(parent);
         boolean verticalList = DividerHelper.isVerticalList(parent);
         View child;
